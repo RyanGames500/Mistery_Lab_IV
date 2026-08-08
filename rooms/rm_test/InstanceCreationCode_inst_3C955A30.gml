@@ -1,0 +1,1 @@
+hsp=-4; //Bro aqui le das la direccion y velocidad, -4 a se movera a la izquierda 4 a la derecha simple

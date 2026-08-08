@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_take_damage",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_take_damage",
+  "parent":{
+    "name":"PLAYERS",
+    "path":"folders/FUNCIONES/PLAYERS.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

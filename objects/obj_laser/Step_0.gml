@@ -1,0 +1,3 @@
+
+solid = active;
+visible = active;

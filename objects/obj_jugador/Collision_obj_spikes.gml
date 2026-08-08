@@ -1,0 +1,1 @@
+player_take_damage(5, true, 1);
