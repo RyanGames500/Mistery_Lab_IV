@@ -1,6 +1,7 @@
 cronometro++;
 
-if (cronometro >= tiempo_disparo) {
+if (cronometro >= tiempo_disparo && distance_to_object(obj_jugador) <= rango) 
+{
     cronometro = 0;
     
     var _flecha = instance_create_layer(x, y, "Instances", obj_flecha);
