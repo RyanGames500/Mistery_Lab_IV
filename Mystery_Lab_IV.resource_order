@@ -79,6 +79,7 @@
     {"name":"oControl_resolution","order":3,"path":"objects/oControl_resolution/oControl_resolution.yy",},
     {"name":"oEnemy","order":1,"path":"objects/oEnemy/oEnemy.yy",},
     {"name":"rm_main","order":1,"path":"rooms/rm_main/rm_main.yy",},
+    {"name":"rm_plantilla_1","order":3,"path":"rooms/rm_plantilla_1/rm_plantilla_1.yy",},
     {"name":"rm_plantilla","order":2,"path":"rooms/rm_plantilla/rm_plantilla.yy",},
     {"name":"snd_dead","order":2,"path":"sounds/snd_dead/snd_dead.yy",},
     {"name":"snd_mareo","order":1,"path":"sounds/snd_mareo/snd_mareo.yy",},
