@@ -1,5 +1,5 @@
 if (active && !other.is_hit) {
-if(!is_dead){
+if(!other.is_dead){
     other.is_hit = true;
     other.image_index = 0;
 

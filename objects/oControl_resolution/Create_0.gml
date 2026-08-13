@@ -20,10 +20,20 @@ device_mouse_dbclick_enable(false)
 act=0;
 
 global.galeria_items = [
-    { item_id: 0, sprite: sprBalon_idle, unlocked: false,  name: "Transformacion Bola" },
+    { item_id: 0, sprite: sprBalon_galery, unlocked: false,  name: "Transformacion Bola" },
     { item_id: 1, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 2, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 3, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 4, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 5, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 6, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 7, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
 ];
-
+//tienda
+global.coins = 100; 
+global.item_ball_skin = false;
+global.item_extra_ammo = false;
+//HUD
 global.hp = 6;    
 global.max_hp = 6;
 global.ammo = 10; 

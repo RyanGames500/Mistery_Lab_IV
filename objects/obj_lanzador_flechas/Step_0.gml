@@ -8,3 +8,7 @@ if (cronometro >= tiempo_disparo && distance_to_object(obj_jugador) <= rango)
     _flecha.hsp = 8 * direccion_disparo;
     _flecha.image_xscale = direccion_disparo; 
 }
+
+if(hp<=0){
+    instance_destroy();
+}

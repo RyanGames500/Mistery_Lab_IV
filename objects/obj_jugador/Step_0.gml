@@ -1,7 +1,7 @@
 if (is_dead) {
     hsp = 0; 
     
-if (!arma_soltada && !is_transformed) {
+    if (!arma_soltada && !is_transformed) {
         arma_soltada = true; 
         if (current_weapon > 0) {
             var _arma_visual = instance_create_layer(x, y - 20, "Platform_Points", obj_arma_muerte);
@@ -11,23 +11,18 @@ if (!arma_soltada && !is_transformed) {
                 } else {
                     sprite_index = sprGaby_pistola; 
                 }
-                
                 image_xscale = other.image_xscale * 1.5;
                 image_yscale = 1.5;
             }
         }
     }
-    // -------------------------------------------------------
 
     if (death_type == "hoyo_negro") {
         vsp = 0;
         if (image_xscale < 0) image_xscale = abs(image_xscale);
-        
         image_angle += 15; 
-        
         image_xscale = max(0, image_xscale - 0.05);
         image_yscale = max(0, image_yscale - 0.05);
-        
         if (image_xscale <= 0) {
             if (!instance_exists(obj_game_over)) {
                 instance_create_layer(0, 0, "Instances", obj_game_over);
@@ -44,7 +39,6 @@ if (!arma_soltada && !is_transformed) {
             vsp = 0;
         }
         y += vsp;
-        
         sprite_index = spr_Gaby_die_normal;
         if (place_meeting(x, y + 1, obj_wall)) {
             if (image_index >= image_number - 1) { 
@@ -59,32 +53,36 @@ if (!arma_soltada && !is_transformed) {
     }
 }
 
+var _is_grounded = place_meeting(x, y + 1, obj_wall) || 
+                   place_meeting(x, y + 1, obj_hielo) || 
+                   (place_meeting(x, y + 1, obj_plataforma_movil) && vsp >= 0) || 
+                   (place_meeting(x, y + 1, obj_plataforma_caida) && vsp >= 0) ||
+                   (place_meeting(x, y + 1, obj_plataforma_atravesable) && vsp >= 0);
+
 if (is_caught) {
     hsp = 0;
     vsp = 0;
-    
-    
     if (current_weapon == 0) {
-        sprite_index = spr_Gaby_enredado;         
+        sprite_index = spr_Gaby_enredado;          
     } else if (current_weapon == 1) {
         sprite_index = spr_Gaby_enre_matafueg;  
     } else {
         sprite_index = spr_Gaby_enredado_pistola; 
     }
-    
     exit; 
 }
 
 if (is_transforming) {
     hsp = 0;
     vsp += grv;
-    if (place_meeting(x, y + vsp, obj_wall)) {
+    if (_is_grounded) {
         vsp = 0;
     }
     y += vsp;
     exit; 
 }
 
+//si estas bajo el efecto de las flechas no puedes atacar
 if (is_poisoned) {
     poison_timer--;
     if (poison_timer <= 0) {
@@ -95,6 +93,7 @@ if (is_poisoned) {
     }
 }
 
+//si estas bajo el efecto del gs los controles se sinvierten
 if (controls_inverted) {
     invert_timer--;
     if (invert_timer <= 0) {
@@ -105,15 +104,10 @@ if (controls_inverted) {
     }
 }
 
-var _is_grounded = place_meeting(x, y + 1, obj_wall) || 
-                   (place_meeting(x, y + 1, obj_plataforma_movil) && vsp >= 0) || 
-                   (place_meeting(x, y + 1, obj_plataforma_caida) && vsp >= 0) ||
-                   (place_meeting(x, y + 1, obj_plataforma_atravesable) && vsp >= 0);
-
 if (!is_hit) {
     if (is_attacking) { mask_index = sprGaby_idle_mask; } 
     else { mask_index = is_transformed ? sprBalon_idle : sprGaby_idle_mask; }
-    //Hola
+
     if (coyote_timer > 0) coyote_timer--;
     if (jump_buffer > 0) jump_buffer--;
     if (_is_grounded) coyote_timer = coyote_max;
@@ -130,6 +124,7 @@ if (!is_hit) {
     if (key_space && is_transformed) { is_transformed = false; transform_type = 0; }
 
     var move = 0;
+
     if (controls_inverted) {
         move = key_left - key_right; 
     } else {
@@ -137,11 +132,17 @@ if (!is_hit) {
     }
     
     if (is_attacking) move = 0;
-
+    if (is_dashing) {
+        
+        if ((image_xscale > 0 && key_left) || (image_xscale < 0 && key_right)) {
+            hsp = lerp(hsp, 0, 0.3); 
+            if (abs(hsp) < 0.5) is_dashing = false; 
+        }
+        move = 0;
+    }
     current_spd = key_run ? run_spd : walk_spd;
 
     var _en_telarana = place_meeting(x, y, obj_tela_arana);
-    
     if (_en_telarana) {
         current_spd = current_spd * 0.4;
     }
@@ -153,40 +154,73 @@ if (!is_hit) {
     }
 
     var _en_hielo = place_meeting(x, y + 1, obj_hielo);
-    var _friccion = _en_hielo ? 0.015 : 0.5; 
-    var _aceleracion = _en_hielo ? 0.07 : 0.4; 
+    var _friccion = (is_dashing) ? 0.02 : (_en_hielo ? 0.05 : 0.5); 
+    var _aceleracion = _en_hielo ? 0.02 : 0.4; 
 
     if (move != 0) {
         hsp += move * _aceleracion;
         hsp = clamp(hsp, -current_spd, current_spd);
     } else {
         hsp = lerp(hsp, 0, _friccion);
-        if (abs(hsp) < 0.1) hsp = 0;
+        if (abs(hsp) < 0.1) {
+            hsp = 0;
+            is_dashing = false; 
+        }
     }
-    // ------------------------------------
+
     vsp += grv;
 
-    if (coyote_timer > 0 && jump_buffer > 0) {
+    if (coyote_timer > 0 && jump_buffer > 0) 
+    {
         var _salto_base = is_transformed ? jump_spd_ball : jump_spd_standard;
-        
         if (_en_telarana) {
             vsp = _salto_base * 0.5;
         } else {
             vsp = _salto_base;
         }
-        
         coyote_timer = 0; 
         jump_buffer = 0;
     }
 
-    if (key_atk_z && !is_attacking && !is_poisoned) { current_weapon = 1; is_attacking = true; is_shooting = false; image_index = 0; }
-    if (key_atk_x && !is_attacking && !is_poisoned) { current_weapon = 2; is_attacking = true; is_shooting = true; bullet_spawned = false; image_index = 0; }
-} else {
-    hsp = lerp(hsp, 0, 0.1);
-    vsp += grv;
-    if (image_index >= image_number - 1) { is_hit = false; }
-}
+    if (is_transformed && transform_type == 1) {
+        if (key_atk_z && !is_poisoned) {
+            var _dir = (image_xscale >= 0) ? 1 : -1;
+            hsp = _dir * (run_spd * 1.5);
+            is_dashing = true;
+        }
+        
+        if (key_atk_x && !is_poisoned && !_is_grounded) {
+            hsp = 0;
+            vsp = 0;             
+            slam_timer = 15;      
+            slam_active = true;
+            is_dashing = false;
+            flash_timer = 3;  
+            var _dir_actual = sign(image_xscale != 0 ? image_xscale : 1);
+            image_xscale = 0.7 * _dir_actual;
+        }
 
+        if (slam_timer > 0) {
+            vsp = 0;          
+            slam_timer--;
+            hsp = 0; 
+            if (slam_timer == 0) {
+                vsp = 18;     
+                var _dir_actual = sign(image_xscale != 0 ? image_xscale : 1);
+                image_xscale = 0.5 * _dir_actual;
+            }
+        }
+        
+        if (flash_timer > 0) {
+            flash_timer--;
+        }        
+    } else {
+        if (key_atk_z && !is_attacking && !is_poisoned) { current_weapon = 1; is_attacking = true; is_shooting = false; image_index = 0; }
+        if (key_atk_x && !is_attacking && !is_poisoned) { current_weapon = 2; is_attacking = true; is_shooting = true; bullet_spawned = false; image_index = 0; }
+    }
+} 
+
+//colicion con plataformas que se mueven (Con rebote integrado para la pelota)
 var _finalMoveX = hsp;
 var _finalMoveY = vsp;
 
@@ -198,8 +232,21 @@ if (_platform && _finalMoveY >= 0 && bbox_bottom <= _platform.bbox_top + 4) {
     while (!place_meeting(x, y + sign(_finalMoveY), _platform)) {
         y += sign(_finalMoveY);
     }
-    _finalMoveY = 0;
-    vsp = 0;
+    
+    // Si somos pelota y vamos cayendo, aplicamos el rebote en lugar de frenar en seco
+    if (is_transformed && transform_type == 1 && _finalMoveY > 0) {
+        vsp = -vsp * bounce_factor;
+        if (abs(vsp) < 2) vsp = 0;
+        _finalMoveY = 0;
+        
+        if (slam_active) {
+            screen_shake(6); 
+            slam_active = false; 
+        }
+    } else {
+        _finalMoveY = 0;
+        vsp = 0;
+    }
     
     if (variable_instance_exists(_platform, "moveX")) {
         _finalMoveX += _platform.moveX;
@@ -221,7 +268,11 @@ if (place_meeting(x, y + _finalMoveY, obj_wall)) {
         vsp = -vsp * bounce_factor;
         if (abs(vsp) < 2) vsp = 0;
         _finalMoveY = 0;
-        image_yscale = 0.7;
+        
+        if (slam_active) {
+            screen_shake(6); 
+            slam_active = false; 
+        }
     } else {
         _finalMoveY = 0;
         vsp = 0;
@@ -230,6 +281,14 @@ if (place_meeting(x, y + _finalMoveY, obj_wall)) {
 
 x += _finalMoveX;
 y += _finalMoveY;
+
+// Sistema anti-atasco seguro
+if (place_meeting(x, y, obj_wall)) {
+    y -= 1;
+}
+if (place_meeting(x, y, obj_wall)) {
+    x -= sign(hsp != 0 ? hsp : image_xscale);
+}
 
 if (!is_hit && !is_dead) {
     if (is_attacking && !is_shooting && !melee_spawned) {
@@ -249,7 +308,6 @@ if (!is_hit && !is_dead) {
                 _bullet.image_xscale = image_xscale;
                 global.ammo -= 1;
             }
-            
             bullet_spawned = true;
         }
     }
@@ -286,7 +344,6 @@ if (!is_hit && !is_dead) {
 } else {
     hsp = lerp(hsp, 0, 0.2);
     vsp += grv;
-    
     if (current_weapon == 1) {
         sprite_index = spr_Gaby_hit;          
     } else if (current_weapon == 2) {
@@ -294,10 +351,10 @@ if (!is_hit && !is_dead) {
     } else {
         sprite_index = spr_Gaby_hit;
     }
-    
     if (image_index >= image_number - 1) { is_hit = false; }
 }
 
+//invensibilidad
 if (invincible) {
     if (current_time % 20 < 10) {
         image_alpha = 0.5;
@@ -308,9 +365,8 @@ if (invincible) {
     image_alpha = 1;
 }
 
-// Buscamos si estamos sobre un portal
+//teletransporte
 var _pad = instance_place(x, y, obj_pad);
-
 if (_pad != noone) {
     if (keyboard_check_pressed(ord("Z"))) {
         with (obj_destino) {
@@ -323,13 +379,26 @@ if (_pad != noone) {
     }
 }
 
+// DEFORMACION DE TF: PELOTA
 if (is_transformed && transform_type == 1) {
     if (!_is_grounded) {
-        image_yscale = lerp(image_yscale, 1.1, 0.15);
+        if (vsp > 2) {
+            image_yscale = lerp(image_yscale, 1.3, 0.2);
+            image_xscale = lerp(image_xscale, 0.8 * (image_xscale >= 0 ? 1 : -1), 0.2);
+        } else if (vsp < -2) {
+            image_yscale = lerp(image_yscale, 1.2, 0.2);
+            image_xscale = lerp(image_xscale, 0.9 * (image_xscale >= 0 ? 1 : -1), 0.2);
+        } else {
+            image_yscale = lerp(image_yscale, 1, 0.2);
+            image_xscale = lerp(image_xscale, 1 * (image_xscale >= 0 ? 1 : -1), 0.2);
+        }
     } else {
-        image_yscale = lerp(image_yscale, 1, 0.2);
+        if (abs(hsp) > 1) {
+            image_yscale = lerp(image_yscale, 0.8, 0.2);
+            image_xscale = lerp(image_xscale, 1.2 * sign(hsp), 0.2);
+        } else {
+            image_yscale = lerp(image_yscale, 1, 0.2);
+            image_xscale = lerp(image_xscale, 1 * (image_xscale >= 0 ? 1 : -1), 0.2);
+        }
     }
-    
-    var _dir = (image_xscale >= 0) ? 1 : -1;
-    image_xscale = lerp(image_xscale, 1 * _dir, 0.2);
 }
