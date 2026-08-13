@@ -10,7 +10,6 @@ switch (estado) {
         
     case "SUBIENDO":
         y = lerp(y, targetY, 0.2);
-        // Comprobación instantánea de colisión mientras sube
         if (place_meeting(x, y, obj_jugador) && !obj_jugador.invincible) {
             with (obj_jugador) {
                 player_take_damage(1, false, 0);
@@ -27,7 +26,6 @@ switch (estado) {
         break;
         
     case "VISIBLE":
-        // Comprobación instantánea de colisión mientras está arriba
         if (place_meeting(x, y, obj_jugador) && !obj_jugador.invincible) {
             with (obj_jugador) {
                 player_take_damage(1, false, 0);

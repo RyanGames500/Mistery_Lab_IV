@@ -34,7 +34,12 @@ is_poisoned = false;
 poison_timer = 0;
 controls_inverted = false;
 invert_timer = 0;
+is_dashing = false;
+slam_active = false;
+slam_timer = 0;
+flash_timer = 0;
 arma_soltada = false;
+landed = false;
 #endregion
 
 #region Mejorar el Gameplay
@@ -61,7 +66,7 @@ form_normal = {
     anim_idle: sprGaby_idle, anim_run: sprGaby_walk, anim_jump: spr_jump_up, anim_fall: spr_jump_fall
 };
 form_pelota = {
-    spd: 2.5, jump: -10, grv: 0.2, 
+    spd: 2.5, jump: -8, grv: 0.2, 
     anim_idle: sprBalon_idle, anim_run: sprBalon_run, anim_jump: sprBalon_idle, anim_fall: sprBalon_idle
 };
 form_cristal = {

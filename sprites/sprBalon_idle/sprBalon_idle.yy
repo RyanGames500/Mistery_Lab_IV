@@ -1,11 +1,11 @@
 {
   "$GMSprite":"v2",
   "%Name":"sprBalon_idle",
-  "bboxMode":0,
+  "bboxMode":2,
   "bbox_bottom":61,
   "bbox_left":0,
   "bbox_right":56,
-  "bbox_top":0,
+  "bbox_top":5,
   "collisionKind":1,
   "collisionTolerance":0,
   "DynamicTexturePage":false,
