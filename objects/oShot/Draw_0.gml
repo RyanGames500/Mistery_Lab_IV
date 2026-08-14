@@ -1,0 +1,1 @@
+x = 850*global.razx

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"AddVkey",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"AddVkey",
+  "parent":{
+    "name":"PLAYERS",
+    "path":"folders/FUNCIONES/PLAYERS.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

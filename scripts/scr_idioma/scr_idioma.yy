@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_idioma",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_idioma",
+  "parent":{
+    "name":"IDIOMA",
+    "path":"folders/FUNCIONES/IDIOMA.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

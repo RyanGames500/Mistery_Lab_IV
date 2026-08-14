@@ -10,8 +10,8 @@
   "name":"obj_game_over",
   "overriddenProperties":[],
   "parent":{
-    "name":"MENU",
-    "path":"folders/OBJETOS/CONTROL/MENU.yy",
+    "name":"JUEGO",
+    "path":"folders/OBJETOS/CONTROL/JUEGO.yy",
   },
   "parentObjectId":null,
   "persistent":false,

@@ -1,3 +1,7 @@
+if (global.pausado) {
+    exit;
+}
+
 
 var _targetX = endX, _targetY = endY;
 if (goingToStart) {

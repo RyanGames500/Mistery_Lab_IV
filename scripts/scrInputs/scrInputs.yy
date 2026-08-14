@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrInputs",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrInputs",
+  "parent":{
+    "name":"PLAYERS",
+    "path":"folders/FUNCIONES/PLAYERS.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
