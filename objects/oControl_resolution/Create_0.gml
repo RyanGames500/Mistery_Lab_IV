@@ -1,3 +1,10 @@
+show_debug_message("Ruta de búsqueda: " + working_directory);
+
+// Elegimos qué idioma cargar
+global.pausado=false;
+global.idioma_actual = "en"; 
+cargar_idioma("lang_" + global.idioma_actual + ".json");
+
 
 if os_type=os_android or os_type=os_windows{
 global.inicx=display_get_width()
@@ -29,6 +36,62 @@ global.galeria_items = [
     { item_id: 6, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
     { item_id: 7, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
 ];
+
+global.mundos = [
+    {
+        mundo_id: 1,
+        nombre: tr("msg_etapa_1"),
+        unlocked: true,
+        niveles: [
+            { nivel_id: 1, room_name: rm_plantilla, unlocked: true },
+            { nivel_id: 2, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 3, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 4, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 5, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 6, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 7, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 8, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 9, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 10, room_name: rm_plantilla, unlocked: false }
+        ]
+    },
+    {
+        mundo_id: 2,
+        nombre: tr("msg_etapa_2"),
+        unlocked: false,
+        niveles: [
+            { nivel_id: 1, room_name: rm_test, unlocked: false }, // El primer nivel del mundo 2 puede empezar bloqueado hasta pasar el mundo 1
+            { nivel_id: 2, room_name: rm_test, unlocked: false },
+            { nivel_id: 3, room_name: rm_test, unlocked: false },
+            { nivel_id: 4, room_name: rm_test, unlocked: false },
+            { nivel_id: 5, room_name: rm_test, unlocked: false },
+            { nivel_id: 6, room_name: rm_test, unlocked: false },
+            { nivel_id: 7, room_name: rm_test, unlocked: false },
+            { nivel_id: 8, room_name: rm_test, unlocked: false },
+            { nivel_id: 9, room_name: rm_test, unlocked: false },
+            { nivel_id: 10, room_name: rm_test, unlocked: false }
+        ]
+    },
+    {
+        mundo_id: 3,
+        nombre: tr("msg_etapa_3"),
+        unlocked: false,
+        niveles: [
+            { nivel_id: 1, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 2, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 3, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 4, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 5, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 6, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 7, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 8, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 9, room_name: rm_plantilla, unlocked: false },
+            { nivel_id: 10, room_name: rm_plantilla, unlocked: false }
+        ]
+    }
+];
+
+global.mundo_activo = 0;
 //tienda
 global.coins = 100; 
 global.item_ball_skin = false;
@@ -40,4 +103,6 @@ global.ammo = 10;
 global.max_ammo = 10;
 
 
+//cargar el progreso guardado
 cargar_galeria();
+cargar_progreso_niveles();

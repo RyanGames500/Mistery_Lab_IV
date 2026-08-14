@@ -1,3 +1,7 @@
+if (global.pausado) {
+    exit;
+}
+
 // Move
 x += moveX;
 y += moveY;

@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"ESTADOS BASICOS",
-    "path":"folders/ANIMACIONES/PLAYERS/GABY/CON MATAFUEGOS/ESTADOS BASICOS.yy",
+    "name":"CON MATAFUEGOS",
+    "path":"folders/ANIMACIONES/PLAYERS/GABY/CON MATAFUEGOS.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

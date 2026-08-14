@@ -1,3 +1,12 @@
+if (global.pausado) {
+    exit;
+}
+
+
+if (can_move == false) {
+    exit;
+}
+
 if (is_dead) {
     hsp = 0; 
     
@@ -52,6 +61,9 @@ if (is_dead) {
         exit;
     }
 }
+
+//teclado / TACTIL
+scrInputs();
 
 var _is_grounded = place_meeting(x, y + 1, obj_wall) || 
                    place_meeting(x, y + 1, obj_hielo) || 
@@ -113,15 +125,7 @@ if (!is_hit) {
     if (_is_grounded) coyote_timer = coyote_max;
     if (key_jump) jump_buffer = buffer_max;
 
-    key_left = keyboard_check(ord("A")) || keyboard_check(vk_left);
-    key_right = keyboard_check(ord("D")) || keyboard_check(vk_right);
-    key_jump = keyboard_check_pressed(ord("W")) || keyboard_check_pressed(vk_up);
-    key_run = keyboard_check(vk_shift);
-    key_atk_z = keyboard_check_pressed(ord("Z"));
-    key_atk_x = keyboard_check_pressed(ord("X"));
-    key_space = keyboard_check_pressed(vk_space);
-
-    if (key_space && is_transformed) { is_transformed = false; transform_type = 0; }
+//aqui hiban las inputs--
 
     var move = 0;
 

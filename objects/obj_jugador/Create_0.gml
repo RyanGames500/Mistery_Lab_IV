@@ -40,6 +40,7 @@ slam_timer = 0;
 flash_timer = 0;
 arma_soltada = false;
 landed = false;
+can_move = true;
 #endregion
 
 #region Mejorar el Gameplay

@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"scrCollisions",
+  "%Name":"guardar_progreso_niveles",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"scrCollisions",
+  "name":"guardar_progreso_niveles",
   "parent":{
-    "name":"coliciones",
-    "path":"folders/Scripts/coliciones.yy",
+    "name":"NIVELES",
+    "path":"folders/FUNCIONES/NIVELES.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"cargar_progreso_niveles",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"cargar_progreso_niveles",
+  "parent":{
+    "name":"NIVELES",
+    "path":"folders/FUNCIONES/NIVELES.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

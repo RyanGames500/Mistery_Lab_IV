@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"completar_nivel_actual",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"completar_nivel_actual",
+  "parent":{
+    "name":"NIVELES",
+    "path":"folders/FUNCIONES/NIVELES.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
