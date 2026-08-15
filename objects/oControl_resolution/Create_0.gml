@@ -4,9 +4,7 @@ show_debug_message("Ruta de búsqueda: " + working_directory);
 global.pausado=false;
 global.idioma_actual = "en"; 
 cargar_idioma("lang_" + global.idioma_actual + ".json");
-//android
-global.pressjoy=0;
-global.pointmo=0;
+
 
 if os_type=os_android or os_type=os_windows{
 global.inicx=display_get_width()
@@ -108,5 +106,3 @@ global.max_ammo = 10;
 //cargar el progreso guardado
 cargar_galeria();
 cargar_progreso_niveles();
-
-room_goto_next();

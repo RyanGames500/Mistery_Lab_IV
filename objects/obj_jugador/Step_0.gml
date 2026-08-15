@@ -310,11 +310,9 @@ if (!is_hit && !is_dead) {
                 var _bullet = instance_create_layer(x, y-35, "Instances", obj_bullet);
                 _bullet.direction = (image_xscale > 0) ? 0 : 180;
                 _bullet.image_xscale = image_xscale;
-                if(room != rm_main && room != rm_galery_seccion1 && room != rm_galery_seccion2)
-                {
-                global.ammo -= 1;}
-                }
-                bullet_spawned = true;
+                global.ammo -= 1;
+            }
+            bullet_spawned = true;
         }
     }
 

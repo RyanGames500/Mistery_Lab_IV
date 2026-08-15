@@ -1,1 +1,0 @@
-x = 1150*global.razx

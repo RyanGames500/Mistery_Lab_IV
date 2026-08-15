@@ -10,7 +10,7 @@ function scrInputs() {
     if (key_space && is_transformed) { is_transformed = false; transform_type = 0; }
     
     //ANDROID / IPAD / TABLET
-    if global.pressjoy{
-	scrJoysctickInput(global.pointmo)
-	}
+    //if global.pressjoy{
+	//scrJoysctickInput(global.pointmo)
+	//}
 }
