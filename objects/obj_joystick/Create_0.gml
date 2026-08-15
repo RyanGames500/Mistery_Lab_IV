@@ -8,7 +8,4 @@ image_index=0;
 act_x=x;
 act_y=y;
 
-global.pressjoy=0;
-global.pointmo=0;
-
 effect_alp=0;
