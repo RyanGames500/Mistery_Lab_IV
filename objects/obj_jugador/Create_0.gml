@@ -1,3 +1,11 @@
+if(os_type == os_android)
+{
+    var joystick = instance_create_depth(x,y,-9999,obj_joystick);
+    var oshot = instance_create_depth(x,y,-9999,oShot);
+    var omelee = instance_create_depth(x,y,-9999,oMelee);
+    var orun = instance_create_depth(x,y,-9999,oRun);
+}
+
 #region CONFIG
 hsp = 0; 
 vsp = 0; 
