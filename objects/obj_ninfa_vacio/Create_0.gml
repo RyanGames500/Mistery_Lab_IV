@@ -7,7 +7,7 @@ enum ESTADO_NINFA {
 
 estado = ESTADO_NINFA.INACTIVA;
 
-rango_deteccion = 350;
+rango_deteccion = 150;
 timer_ataque = 0;
 intervalo_ataque = 180;
 duracion_desvanecer = 0;
