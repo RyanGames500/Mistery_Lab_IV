@@ -17,7 +17,13 @@ else if os_type=os_android or os_type = os_ios
 if room=rm_main{maxy=300}else if room=rm_plantilla{maxy=300} // PC    
 }      
 camera_set_view_size(view_camera[0],maxy*aspect_ratio,maxy) //190
-surface_resize(application_surface,720*aspect_ratio,720)//comentar cuando este para windows
+    
+var _w = max(1, floor(720 * aspect_ratio));
+var _h = 720;
+
+if (surface_get_width(application_surface) != _w || surface_get_height(application_surface) != _h) {
+    surface_resize(application_surface, _w, _h);
+}
 
 global.razx=(720*aspect_ratio)/1280;
 }

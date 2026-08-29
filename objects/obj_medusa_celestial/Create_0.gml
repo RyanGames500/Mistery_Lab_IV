@@ -1,0 +1,11 @@
+rango_ataque = 90;  
+cargando_ataque = false;
+tiempo_carga = 0;
+duracion_carga = 45;
+angulo_flotar = random(360);
+velocidad_flotar = 0.02;
+amplitud_flotar = 3;
+y_inicial = y;
+escala_visual = 1;
+parpadeo_alerta = 0;
+cooldown_descanso = 0;
