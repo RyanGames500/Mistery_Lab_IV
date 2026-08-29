@@ -146,7 +146,6 @@
     {"id":{"name":"obj_ventilador","path":"objects/obj_ventilador/obj_ventilador.yy",},},
     {"id":{"name":"obj_wall","path":"objects/obj_wall/obj_wall.yy",},},
     {"id":{"name":"obj_Win","path":"objects/obj_Win/obj_Win.yy",},},
-    {"id":{"name":"objPause_1","path":"objects/objPause_1/objPause_1.yy",},},
     {"id":{"name":"objPause","path":"objects/objPause/objPause.yy",},},
     {"id":{"name":"oControl_resolution","path":"objects/oControl_resolution/oControl_resolution.yy",},},
     {"id":{"name":"oEnemy","path":"objects/oEnemy/oEnemy.yy",},},

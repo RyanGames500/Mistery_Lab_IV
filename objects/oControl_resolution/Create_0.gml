@@ -23,7 +23,12 @@ if aspect_ratio<(1/0.65){aspect_ratio=1/0.65}
 if aspect_ratio>(1/0.45){aspect_ratio=1/0.45}
 global.razx=(720*aspect_ratio)/1280; 
 
-surface_resize(application_surface,720*aspect_ratio,720)
+var _w = max(1, floor(720 * aspect_ratio));
+var _h = 720;
+
+if (surface_get_width(application_surface) != _w || surface_get_height(application_surface) != _h) {
+    surface_resize(application_surface, _w, _h);
+}
 camera_set_view_size(view_camera[0],225*aspect_ratio,225)
 device_mouse_dbclick_enable(false)
 act=0;
