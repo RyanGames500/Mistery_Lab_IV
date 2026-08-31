@@ -3,9 +3,18 @@ if (!is_transforming && !is_transformed && room != rm_galery_seccion1) {
     hsp = 0;
     vsp = 0;
     image_index = 0;
-    sprite_index = spr_gaby_transformando; 
-    var _id_a_desbloquear = other.item_id; 
-    global.galeria_items[_id_a_desbloquear].unlocked = true;
+    
+    // 1. Asignamos primero el transform_type
+    transform_type = other.item_id; 
+    
+    // 2. Elegimos el sprite de transformación correcto
+    if (transform_type == 3 || transform_type == 1) { // Si es Globo (o ID 1 de galería)
+        sprite_index = spr_gaby_globo_transformando;
+    } else {
+        sprite_index = spr_gaby_transformando;
+    }
+    
+    global.galeria_items[other.item_id].unlocked = true;
     guardar_galeria();
     instance_destroy(other); 
 }
@@ -14,6 +23,14 @@ else if (!is_transforming && !is_transformed && room == rm_galery_seccion1 && ke
     hsp = 0;
     vsp = 0;
     image_index = 0;
-    sprite_index = spr_gaby_transformando; 
+    
+    transform_type = other.item_id; 
+    
+    if (transform_type == 3 || transform_type == 1) {
+        sprite_index = spr_gaby_globo_transformando;
+    } else {
+        sprite_index = spr_gaby_transformando;
+    }
+    
     instance_destroy(other); 
 }

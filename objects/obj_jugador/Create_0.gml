@@ -82,6 +82,10 @@ form_cristal = {
     spd: 4, jump: -6, grv: 0.1, 
     anim_idle: sprGabyCristal_idle, anim_run: sprGabyCristal_run, anim_jump: sprGabyCristal_jump, anim_fall: sprGabyCristal_jump
 };
+form_globo = {
+    spd: 2, jump: 0, grv: 0, 
+    anim_idle: spr_gaby_globo, anim_run: spr_gaby_globo, anim_jump: spr_gaby_globo, anim_fall: spr_gaby_globo
+};
 current_form = form_normal;
 
 //solo para la transformacion de la pelota

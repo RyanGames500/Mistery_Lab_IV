@@ -2,7 +2,6 @@ if (global.pausado) {
     exit;
 }
 
-
 if (can_move == false) {
     exit;
 }
@@ -75,7 +74,7 @@ if (is_caught) {
     hsp = 0;
     vsp = 0;
     if (current_weapon == 0) {
-        sprite_index = spr_Gaby_enredado;          
+        sprite_index = spr_Gaby_enredado;         
     } else if (current_weapon == 1) {
         sprite_index = spr_Gaby_enre_matafueg;  
     } else {
@@ -161,31 +160,61 @@ if (!is_hit) {
     var _friccion = (is_dashing) ? 0.02 : (_en_hielo ? 0.05 : 0.5); 
     var _aceleracion = _en_hielo ? 0.02 : 0.4; 
 
-    if (move != 0) {
-        hsp += move * _aceleracion;
-        hsp = clamp(hsp, -current_spd, current_spd);
-    } else {
-        hsp = lerp(hsp, 0, _friccion);
-        if (abs(hsp) < 0.1) {
-            hsp = 0;
-            is_dashing = false; 
-        }
-    }
-
-    vsp += grv;
-
-    if (coyote_timer > 0 && jump_buffer > 0) 
-    {
-        var _salto_base = is_transformed ? jump_spd_ball : jump_spd_standard;
-        if (_en_telarana) {
-            vsp = _salto_base * 0.5;
+    // --- LÓGICA DE MOVIMIENTO BASE Y TRANSFORMACIONES ---
+    if (is_transformed && transform_type == 3) {
+        // MOVIMIENTO TF3: GLOBO AEROSTÁTICO
+        vsp = 0;
+        
+        if (move != 0) {
+            hsp += move * _aceleracion;
+            hsp = clamp(hsp, -current_spd, current_spd);
         } else {
-            vsp = _salto_base;
+            hsp = lerp(hsp, 0, _friccion);
+            if (abs(hsp) < 0.1) hsp = 0;
         }
-        coyote_timer = 0; 
-        jump_buffer = 0;
+        
+        // Flotación relativa al piso sin errores
+        var _suelo_abajo = collision_line(x, y, x, y + 250, obj_wall, false, true);
+        if (_suelo_abajo != noone) {
+            var _distancia_piso = _suelo_abajo.y - y;
+            if (_distancia_piso > 90) {
+                vsp = 1; 
+            } else if (_distancia_piso < 70) {
+                vsp = -1; 
+            } else {
+                vsp = sin(current_time * 0.005) * 0.5; 
+            }
+        }
+        
+    } else {
+        // MOVIMIENTO NORMAL
+        if (move != 0) {
+            hsp += move * _aceleracion;
+            hsp = clamp(hsp, -current_spd, current_spd);
+        } else {
+            hsp = lerp(hsp, 0, _friccion);
+            if (abs(hsp) < 0.1) {
+                hsp = 0;
+                is_dashing = false; 
+            }
+        }
+
+        vsp += grv;
+
+        if (coyote_timer > 0 && jump_buffer > 0) 
+        {
+            var _salto_base = is_transformed ? jump_spd_ball : jump_spd_standard;
+            if (_en_telarana) {
+                vsp = _salto_base * 0.5;
+            } else {
+                vsp = _salto_base;
+            }
+            coyote_timer = 0; 
+            jump_buffer = 0;
+        }
     }
 
+    // --- ACCIONES SEGÚN TRANSFORMACIÓN ---
     if (is_transformed && transform_type == 1) {
         if (key_atk_z && !is_poisoned) {
             var _dir = (image_xscale >= 0) ? 1 : -1;
@@ -218,7 +247,39 @@ if (!is_hit) {
         if (flash_timer > 0) {
             flash_timer--;
         }        
-    } else {
+    } 
+    else if (is_transformed && transform_type == 3) {
+        //GLOBO AEROSTATICO
+        if (key_atk_z && !is_poisoned && !is_dashing) {
+            is_dashing = true;
+            jump_buffer = 25; 
+        }
+        
+        if (is_dashing) {
+            hsp = (image_xscale >= 0 ? 1 : -1) * 12; // Velocidad de envestida fuerte
+            vsp = 0;
+            jump_buffer--;
+            
+            // Matar o golpear enemigos en la trayectoria del dash
+            var _enemy_hit = instance_place(x + hsp, y, obj_enemy_parent);
+            if (_enemy_hit != noone) {
+                with (_enemy_hit) {
+                    //bajar vida
+                    instance_destroy();
+                }
+            }
+            
+            if (jump_buffer <= 0) {
+                is_dashing = false;
+            }
+        }
+        
+        if (key_atk_x && !is_poisoned) {
+            var _misil = instance_create_layer(x, y + 15, "Instances", obj_misil_globo);
+            _misil.hsp = (image_xscale >= 0 ? 1 : -1) * 2;
+        }
+    }
+    else {
         if (key_atk_z && !is_attacking && !is_poisoned) { current_weapon = 1; is_attacking = true; is_shooting = false; image_index = 0; }
         if (key_atk_x && !is_attacking && !is_poisoned) { current_weapon = 2; is_attacking = true; is_shooting = true; bullet_spawned = false; image_index = 0; }
     }
@@ -325,6 +386,9 @@ if (!is_hit && !is_dead) {
         if (hsp > 0) image_xscale = abs(image_xscale);
         if (hsp < 0) image_xscale = -abs(image_xscale);
     }
+    if (is_transformed && transform_type == 3 && abs(hsp) > 0.1) {
+        image_xscale = sign(hsp) * abs(image_xscale);
+    }
 
     if (is_attacking) {
         if (is_shooting) {
@@ -338,6 +402,8 @@ if (!is_hit && !is_dead) {
                 sprite_index = (_is_grounded) ? (hsp != 0 ? sprBalon_run : sprBalon_idle) : sprBalon_idle;
             } else if (transform_type == 2) {
                 sprite_index = (_is_grounded) ? (hsp != 0 ? sprGabyCristal_run : sprGabyCristal_idle) : sprGabyCristal_jump;
+            } else if (transform_type == 3) {
+                sprite_index = spr_gaby_globo;
             }
         } else {
             if (current_weapon == 1) {
