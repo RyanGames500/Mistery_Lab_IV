@@ -93,6 +93,10 @@ is_dashing = false;
 dash_spd = 12;
 dash_timer = 0;
 dash_cooldown = 30;
+// Variables de la Transformación Nube
+nube_fase_active = false;
+nube_fase_timer = 0;
+nube_cooldown = 0;
 #endregion
 // Estado Inicial
 estado = "idle";

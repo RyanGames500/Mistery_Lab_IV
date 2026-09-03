@@ -7,9 +7,16 @@ if (!is_transforming && !is_transformed && room != rm_galery_seccion1) {
     // 1. Asignamos primero el transform_type
     transform_type = other.item_id; 
     
-    // 2. Elegimos el sprite de transformación correcto
-    if (transform_type == 3 || transform_type == 1) { // Si es Globo (o ID 1 de galería)
+    // 2. Elegimos el sprite de transformación correcto según el id
+    if (transform_type == 1) {
+        sprite_index = spr_gaby_transformando;
+    }
+      else if (transform_type == 3) { 
         sprite_index = spr_gaby_globo_transformando;
+    } else if (transform_type == 4) { 
+        sprite_index = spr_gaby_nube_transformando; 
+    } else if (transform_type == 5) { 
+        sprite_index = spr_gaby_abeja_transformando; 
     } else {
         sprite_index = spr_gaby_transformando;
     }
@@ -26,8 +33,15 @@ else if (!is_transforming && !is_transformed && room == rm_galery_seccion1 && ke
     
     transform_type = other.item_id; 
     
-    if (transform_type == 3 || transform_type == 1) {
+    if (transform_type == 1) {
+        sprite_index = spr_gaby_transformando;
+    }
+      else if (transform_type == 3) { 
         sprite_index = spr_gaby_globo_transformando;
+    } else if (transform_type == 4) { 
+        sprite_index = spr_gaby_nube_transformando; 
+    } else if (transform_type == 5) { 
+        sprite_index = spr_gaby_abeja_transformando; 
     } else {
         sprite_index = spr_gaby_transformando;
     }

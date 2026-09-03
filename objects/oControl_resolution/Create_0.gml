@@ -36,8 +36,8 @@ act=0;
 global.galeria_items = [
     { item_id: 0, sprite: sprBalon_galery, unlocked: false,  name: "Transformacion Bola" },
     { item_id: 1, sprite: spr_gaby_globo, unlocked: false, name: "Transformacion Globo" },
-    { item_id: 2, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
-    { item_id: 3, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 2, sprite: spr_gaby_nube, unlocked: false, name: "Transformacion Nube" },
+    { item_id: 3, sprite: spr_gaby_abeja, unlocked: false, name: "Transformacion Abeja" },
     { item_id: 4, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
     { item_id: 5, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
     { item_id: 6, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
