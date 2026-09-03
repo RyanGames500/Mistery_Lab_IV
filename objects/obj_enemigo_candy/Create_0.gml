@@ -9,4 +9,3 @@ hp = 100;
 estado_anterior = "IDLE";
 snd_played = false;
 snd_inst = -1;
-//boolkey ACtive prueba

@@ -1,5 +1,11 @@
 var oPlayer = obj_jugador;
 
+// --- CONTROL DEL EFECTO DE MIEL ---
+if (variable_instance_exists(id, "miel_timer") && miel_timer > 0) {
+    miel_timer--;
+    exit; 
+}
+
 // Reducir el cooldown de ataque
 if (cooldown_ataque > 0) {
     cooldown_ataque--;

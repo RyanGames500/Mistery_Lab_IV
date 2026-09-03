@@ -2,6 +2,12 @@ angulo_flotar += velocidad_flotar;
 var _offset_v = sin(angulo_flotar) * amplitud_flotar;
 var oPlayer = obj_jugador;
 
+// --- CONTROL DEL EFECTO DE MIEL ---
+if (variable_instance_exists(id, "miel_timer") && miel_timer > 0) {
+    miel_timer--;
+    exit; 
+}
+
 if (instance_exists(oPlayer)) {
     var _dist = distance_to_object(oPlayer);
     
