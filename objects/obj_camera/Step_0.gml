@@ -33,7 +33,7 @@ if (room == rm_main) {
         look_ahead = lerp(look_ahead, facing * 20, 0.05);
         
         var target_x = (obj_jugador.x + look_ahead) - (cam_width / 2);
-        var target_y = (obj_jugador.y - 16) - (cam_height / 2);
+        var target_y = (obj_jugador.y - 116) - (cam_height / 2);
         
         var cam_x = camera_get_view_x(view_camera[0]);
         var cam_y = camera_get_view_y(view_camera[0]);

@@ -1,5 +1,13 @@
 var oPlayer = obj_jugador;
 
+// --- CONTROL DEL EFECTO DE STUN (Beso de Sucubus) ---
+if (variable_instance_exists(id, "stun_timer") && stun_timer > 0) {
+    stun_timer--;
+    hsp = 0;
+    vsp = 0;
+    exit; 
+}
+
 // --- CONTROL DEL EFECTO DE MIEL ---
 if (variable_instance_exists(id, "miel_timer") && miel_timer > 0) {
     miel_timer--;

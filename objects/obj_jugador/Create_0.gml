@@ -97,6 +97,9 @@ dash_cooldown = 30;
 nube_fase_active = false;
 nube_fase_timer = 0;
 nube_cooldown = 0;
+//solo tobogan
+tobogan_inflado_timer = 0;
+tobogan_dash_timer = 0;
 #endregion
 // Estado Inicial
 estado = "idle";
