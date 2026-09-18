@@ -26,7 +26,7 @@
   "origin":7,
   "parent":{
     "name":"CRISTAL",
-    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/CRISTAL.yy",
+    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/POCIONES/CRISTAL.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -9,7 +9,8 @@ if (can_move == false) {
 if (is_dead) {
     hsp = 0; 
     
-    if (!arma_soltada && !is_transformed) {
+    // Solo suelta el arma si NO está transformado Y la bandera está limpia
+    if (!arma_soltada && !is_transformed && transform_type == 0) {
         arma_soltada = true; 
         if (current_weapon > 0) {
             var _arma_visual = instance_create_layer(x, y - 20, "Platform_Points", obj_arma_muerte);
@@ -124,7 +125,7 @@ if (!is_hit) {
             else if (transform_type == 3) {
                 mask_index = spr_gaby_globo; 
             } 
-            else if (transform_type == 4 || transform_type == 5 || transform_type == 7) {
+            else if (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9) {
                 mask_index = sprBalon_idle; 
             }
             else {
@@ -276,6 +277,24 @@ if (!is_hit) {
             vsp = lerp(vsp, 0, 0.15); 
         }
     }
+    else if (is_transformed && transform_type == 9) {
+        var _dir_x = (keyboard_check(vk_right) || keyboard_check(ord("D"))) - (keyboard_check(vk_left) || keyboard_check(ord("A")));
+        var _dir_y = (keyboard_check(vk_down)  || keyboard_check(ord("S"))) - (keyboard_check(vk_up)   || keyboard_check(ord("W")));
+        var _avion_spd = 5.5; 
+        
+        if (_dir_x != 0) {
+            hsp = lerp(hsp, _dir_x * _avion_spd, 0.2);
+            image_xscale = sign(_dir_x) * abs(image_xscale);
+        } else {
+            hsp = lerp(hsp, 0, 0.15);
+        }
+        
+        if (_dir_y != 0) {
+            vsp = lerp(vsp, _dir_y * _avion_spd, 0.2);
+        } else {
+            vsp = lerp(vsp, 0, 0.15); 
+        }
+    }
     else {
         if (move != 0) {
             hsp += move * _aceleracion;
@@ -316,7 +335,7 @@ if (!is_hit) {
         
         if (key_atk_x && !is_poisoned && !_is_grounded) {
             hsp = 0;
-            vsp = 0;             
+            vsp = 0;               
             slam_timer = 15;      
             slam_active = true;
             is_dashing = false;
@@ -465,7 +484,6 @@ if (!is_hit) {
 
         if (key_atk_x && !is_poisoned && !instance_exists(obj_beso_sucubo)) {
             var _dir_beso = (image_xscale >= 0) ? 1 : -1;
-            // Coordenadas exactas desde la boca de la Súcubo
             var _spawn_x = x + (_dir_beso * 20);
             var _spawn_y = y - 40; 
             
@@ -474,9 +492,36 @@ if (!is_hit) {
             _beso.image_xscale = image_xscale;
         }
     }
+    else if (is_transformed && transform_type == 8) {
+        var _dir_x = (keyboard_check(vk_right) || keyboard_check(ord("D"))) - (keyboard_check(vk_left) || keyboard_check(ord("A")));
+        var _dir_y = (keyboard_check(vk_down)  || keyboard_check(ord("S"))) - (keyboard_check(vk_up)   || keyboard_check(ord("W")));
+        var _ninfa_spd = 4.0; 
+        
+        if (_dir_x != 0) {
+            hsp = lerp(hsp, _dir_x * _ninfa_spd, 0.2);
+            image_xscale = sign(_dir_x) * abs(image_xscale);
+        } else {
+            hsp = lerp(hsp, 0, 0.15);
+        }
+        
+        if (_dir_y != 0) {
+            vsp = lerp(vsp, _dir_y * _ninfa_spd, 0.2);
+        } else {
+            vsp = lerp(vsp, 0, 0.15); 
+        }
+
+        if (key_atk_z && !is_poisoned) {
+        }
+
+        if (key_atk_x && !is_poisoned) {
+        }
+    }    
     else {
-        if (key_atk_z && !is_attacking && !is_poisoned) { current_weapon = 1; is_attacking = true; is_shooting = false; image_index = 0; }
-        if (key_atk_x && !is_attacking && !is_poisoned) { current_weapon = 2; is_attacking = true; is_shooting = true; bullet_spawned = false; image_index = 0; }
+        // Validación estricta: Solo permite armas y ataques humanos si NO está transformado
+        if (!is_transformed) {
+            if (key_atk_z && !is_attacking && !is_poisoned) { current_weapon = 1; is_attacking = true; is_shooting = false; image_index = 0; }
+            if (key_atk_x && !is_attacking && !is_poisoned) { current_weapon = 2; is_attacking = true; is_shooting = true; bullet_spawned = false; image_index = 0; }
+        }
     }
 } 
 
@@ -485,7 +530,7 @@ var _finalMoveY = vsp;
 
 var _platform = noone;
 
-if (!(is_transformed && (transform_type == 4 || transform_type == 5 || transform_type == 7)) && !(is_transformed && transform_type == 3 && is_dashing)) {
+if (!(is_transformed && (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9)) && !(is_transformed && transform_type == 3 && is_dashing)) {
     _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_movil);
     if (!_platform) _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_caida);
     if (!_platform) _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_atravesable);
@@ -584,7 +629,7 @@ if (!is_hit && !is_dead) {
         if (hsp > 0) image_xscale = abs(image_xscale);
         if (hsp < 0) image_xscale = -abs(image_xscale);
     }
-    if (is_transformed && (transform_type == 3 || transform_type == 4 || transform_type == 5 || transform_type == 7) && abs(hsp) > 0.1) {
+    if (is_transformed && (transform_type == 3 || transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9) && abs(hsp) > 0.1) {
         image_xscale = sign(hsp) * abs(image_xscale);
     }
 
@@ -610,6 +655,21 @@ if (!is_hit && !is_dead) {
                 sprite_index = spr_gaby_tobogan; 
             } else if (transform_type == 7) {
                 sprite_index = spr_gaby_socubus; 
+            } else if (transform_type == 8) {
+                sprite_index = spr_gaby_ninfa_TF;
+            } else if (transform_type == 9) {
+                if (abs(hsp) < 0.1 && abs(vsp) < 0.1) {
+                    sprite_index = spr_gaby_avion_idle;
+                    if (image_index >= image_number - 1) {
+                        image_index = image_number - 1;
+                        image_speed = 0;
+                    } else {
+                        image_speed = 1;
+                    }
+                } else {
+                    sprite_index = spr_gaby_avion;
+                    image_speed = 1;
+                }
             }
         } else {
             if (current_weapon == 1) {
@@ -619,17 +679,62 @@ if (!is_hit && !is_dead) {
             }
         }
     }
-} else {
+} 
+else {
     hsp = lerp(hsp, 0, 0.2);
     vsp += grv;
-    if (current_weapon == 1) {
-        sprite_index = spr_Gaby_hit;          
-    } else if (current_weapon == 2) {
-        sprite_index = spr_Gaby_hit_shot;
-    } else {
-        sprite_index = spr_Gaby_hit;
+    
+    if (is_transformed) {
+        if (transform_type == 1) {
+            sprite_index = sprBalon_hit; 
+        } 
+        else if (transform_type == 2) {
+            sprite_index = sprGabyCristal_hit; 
+        } 
+        else if (transform_type == 3) {
+            sprite_index = spr_gaby_globo_hit; 
+        } 
+        else if (transform_type == 4) {
+            sprite_index = spr_gaby_nube_hit; 
+        } 
+        else if (transform_type == 5) {
+            sprite_index = spr_gaby_abeja_hit; 
+        } 
+        else if (transform_type == 6) {
+            sprite_index = spr_gaby_tobogan_hit; 
+        } 
+        else if (transform_type == 7) {
+            sprite_index = spr_gaby_socubus_hit; 
+        } 
+        else if (transform_type == 8) {
+            if (variable_instance_exists(id, "golpe_ninfa_especial") && golpe_ninfa_especial) {
+                sprite_index = spr_gaby_condon_arrugado; 
+            } else {
+                sprite_index = spr_gaby_condon_hit; 
+            }
+        }
+        else if (transform_type == 9) {
+            sprite_index = spr_gaby_avion_hit;
+        }
+    } 
+    else {
+        image_blend = c_white;
+        if (current_weapon == 1) {
+            sprite_index = spr_Gaby_hit;          
+        } else if (current_weapon == 2) {
+            sprite_index = spr_Gaby_hit_shot;
+        } else {
+            sprite_index = spr_Gaby_hit;
+        }
     }
-    if (image_index >= image_number - 1) { is_hit = false; }
+    
+    if (image_index >= image_number - 1) { 
+        is_hit = false; 
+        image_blend = c_white;
+        if (variable_instance_exists(id, "golpe_ninfa_especial")) {
+            golpe_ninfa_especial = false;
+        }
+    }
 }
 
 if (invincible) {

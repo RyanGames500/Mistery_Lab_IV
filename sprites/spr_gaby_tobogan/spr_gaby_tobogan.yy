@@ -45,7 +45,7 @@
   "origin":9,
   "parent":{
     "name":"TOBOGAN INFLABLE",
-    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/TOBOGAN INFLABLE.yy",
+    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/POCIONES/TOBOGAN INFLABLE.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -48,7 +48,7 @@
   "origin":9,
   "parent":{
     "name":"ABEJA",
-    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ABEJA.yy",
+    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/POCIONES/ABEJA.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

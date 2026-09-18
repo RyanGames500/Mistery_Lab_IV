@@ -45,7 +45,7 @@
   "origin":9,
   "parent":{
     "name":"NUBE",
-    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/NUBE.yy",
+    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/POCIONES/NUBE.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

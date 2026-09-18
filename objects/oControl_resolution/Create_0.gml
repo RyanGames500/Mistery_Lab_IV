@@ -34,14 +34,24 @@ device_mouse_dbclick_enable(false)
 act=0;
 
 global.galeria_items = [
+    //Pociones Etapa 1: transformaciones
     { item_id: 0, sprite: sprBalon_galery, unlocked: false,  name: "Transformacion Bola" },
     { item_id: 1, sprite: spr_gaby_globo, unlocked: false, name: "Transformacion Globo" },
     { item_id: 2, sprite: spr_gaby_nube, unlocked: false, name: "Transformacion Nube" },
     { item_id: 3, sprite: spr_gaby_abeja, unlocked: false, name: "Transformacion Abeja" },
     { item_id: 4, sprite: spr_gaby_tobogan, unlocked: false, name: "Transformacion Tobogan" },
     { item_id: 5, sprite: spr_gaby_socubus, unlocked: false, name: "Transformacion Socubus" },
-    { item_id: 6, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
-    { item_id: 7, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    //Enemigos Etapa 1: tranformaciones
+    { item_id: 6, sprite: spr_gaby_ninfa_TF, unlocked: false, name: "Transformacion Condon" },
+    { item_id: 7, sprite: spr_gaby_avion, unlocked: false, name: "Transformacion Avion" },
+    { item_id: 8, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 9, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 10, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 11, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 12, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 13, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 14, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 15, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },                                
 ];
 
 global.mundos = [
@@ -100,7 +110,7 @@ global.mundos = [
 
 global.mundo_activo = 0;
 //tienda
-global.coins = 100; 
+global.coins = 0; 
 global.item_ball_skin = false;
 global.item_extra_ammo = false;
 //HUD
@@ -108,7 +118,7 @@ global.hp = 6;
 global.max_hp = 6;
 global.ammo = 10; 
 global.max_ammo = 10;
-
+global.puntos = 0;
 
 //cargar el progreso guardado
 cargar_galeria();

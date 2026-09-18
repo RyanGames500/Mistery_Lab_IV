@@ -26,7 +26,7 @@
   "origin":7,
   "parent":{
     "name":"PELOTA",
-    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/PELOTA.yy",
+    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/POCIONES/PELOTA.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

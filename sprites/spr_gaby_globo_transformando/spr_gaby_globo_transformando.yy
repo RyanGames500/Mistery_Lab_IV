@@ -55,7 +55,7 @@
   "origin":9,
   "parent":{
     "name":"GLOBO",
-    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/GLOBO.yy",
+    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/POCIONES/GLOBO.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

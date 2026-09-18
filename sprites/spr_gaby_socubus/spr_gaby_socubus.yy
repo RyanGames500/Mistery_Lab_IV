@@ -49,7 +49,7 @@
   "origin":9,
   "parent":{
     "name":"SUCUBUS SEXY",
-    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/SUCUBUS SEXY.yy",
+    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/POCIONES/SUCUBUS SEXY.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
