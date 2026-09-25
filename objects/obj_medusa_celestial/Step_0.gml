@@ -43,15 +43,56 @@ if (instance_exists(oPlayer)) {
             if (_dist <= rango_ataque + 25) {
                 with (oPlayer) { 
                     if (!is_hit) {
-                        if (!is_dead) {
-                            is_hit = true;
-                            image_index = 0;
-                            var _dir = sign(other.x - x);
-                            hsp = _dir * -7; 
-                            vsp = -5;
-                            player_take_damage(1, false, 1);
-                            x += _dir * -10;
-                            electrificado_timer = 45; 
+                        if (!is_dead && !is_transforming) {
+                            
+                            // CASO A: Si ya está transformado en la medusa (Tipo 10)
+                            if (is_transformed && transform_type == 10) {
+                                player_take_damage(1, false, 1);
+                                is_hit = true;
+                                image_index = 0;
+                                image_speed = 1;
+                                
+                                // Activamos la bandera de golpe especial para el tipo 10 (similar al avión o ninfa)
+                                golpe_medusa_especial = true; 
+                                
+                                var _dir = sign(other.x - x);
+                                hsp = _dir * -7; 
+                                vsp = -5;
+                                x += _dir * -10;
+                                electrificado_timer = 45; 
+                            } 
+                            // CASO B: Si se transforma por primera vez en medusa
+                            else {
+                                global.hp -= 1;
+                                if (global.hp <= 0) { is_dead = true; }
+                                
+                                invincible = true;
+                                alarm[2] = 90;
+                                
+                                golpe_medusa_especial = false;
+                                
+                                is_transforming = true;
+                                is_transformed = false;
+                                hsp = 0;
+                                vsp = 0;
+                                image_index = 0;
+                                image_speed = 1; 
+                                
+                                transform_type = 10;
+                                sprite_index = spr_gaby_medusa_transformando; // Cambia por tu sprite de transformación
+                                
+                                electrificado_timer = 45;
+                                
+                                // Desbloqueo seguro en galería
+                                if (variable_global_exists("galeria_items")) {
+                                    if (transform_type < array_length(global.galeria_items)) {
+                                        global.galeria_items[transform_type].unlocked = true;
+                                        if (script_exists(asset_get_index("guardar_galeria"))) {
+                                            guardar_galeria();
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }         
                 }

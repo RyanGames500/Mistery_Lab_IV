@@ -3,6 +3,8 @@ x += vel_viento * direccion_viento;
 if (place_meeting(x, y, obj_jugador)) {
     with (obj_jugador) { 
         if (!is_dead && !is_transforming) {
+            
+            // CASO A: Si ya tiene la transformación de avión activa
             if (is_transformed && transform_type == 9) {
                 if (!is_hit) {
                     is_hit = true;
@@ -13,8 +15,11 @@ if (place_meeting(x, y, obj_jugador)) {
                     hsp = _dir * -7; 
                     player_take_damage(1, false, 1); 
                     x += _dir * -10;
+                    
+                    golpe_bruja_especial = true; // Activa sprite de impacto especial de avión si aplica
                 }
             } 
+            // CASO B: Si se va a transformar al avión por primera vez (o viene de otra forma)
             else {
                 global.hp -= 1;
                 if (global.hp <= 0) {
@@ -22,6 +27,8 @@ if (place_meeting(x, y, obj_jugador)) {
                 }
                 invincible = true;
                 alarm[2] = 90;
+                
+                golpe_bruja_especial = false; // Es transformación nueva, no golpe repetido
                 
                 is_transforming = true;
                 is_transformed = false;
@@ -33,6 +40,7 @@ if (place_meeting(x, y, obj_jugador)) {
                 transform_type = 9;
                 sprite_index = spr_gaby_avion_transformando;
                 
+                // Desbloqueo seguro en galería
                 if (variable_global_exists("galeria_items")) {
                     if (transform_type < array_length(global.galeria_items)) {
                         global.galeria_items[transform_type].unlocked = true;

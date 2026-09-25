@@ -44,7 +44,7 @@ global.galeria_items = [
     //Enemigos Etapa 1: tranformaciones
     { item_id: 6, sprite: spr_gaby_ninfa_TF, unlocked: false, name: "Transformacion Condon" },
     { item_id: 7, sprite: spr_gaby_avion, unlocked: false, name: "Transformacion Avion" },
-    { item_id: 8, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
+    { item_id: 8, sprite: spr_gaby_medusa_idle, unlocked: false, name: "Transformacion globos" },
     { item_id: 9, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
     { item_id: 10, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },
     { item_id: 11, sprite: spr_test_1, unlocked: false, name: "Transformacion Cristal" },

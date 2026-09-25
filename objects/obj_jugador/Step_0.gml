@@ -125,7 +125,7 @@ if (!is_hit) {
             else if (transform_type == 3) {
                 mask_index = spr_gaby_globo; 
             } 
-            else if (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9) {
+            else if (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10) {
                 mask_index = sprBalon_idle; 
             }
             else {
@@ -295,6 +295,26 @@ if (!is_hit) {
             vsp = lerp(vsp, 0, 0.15); 
         }
     }
+    // --- NUEVA LÓGICA DE MOVIMIENTO PARA LA TRANSFORMACIÓN 10 (Medusa / Globos) ---
+    else if (is_transformed && transform_type == 10) {
+        var _dir_x = (keyboard_check(vk_right) || keyboard_check(ord("D"))) - (keyboard_check(vk_left) || keyboard_check(ord("A")));
+        var _dir_y = (keyboard_check(vk_down)  || keyboard_check(ord("S"))) - (keyboard_check(vk_up)   || keyboard_check(ord("W")));
+        var _medusa_spd = 4.5;
+        
+        if (_dir_x != 0) {
+            hsp = lerp(hsp, _dir_x * _medusa_spd, 0.2);
+            image_xscale = sign(_dir_x) * abs(image_xscale);
+        } else {
+            hsp = lerp(hsp, 0, 0.15);
+        }
+        
+        if (_dir_y != 0) {
+            vsp = lerp(vsp, _dir_y * _medusa_spd, 0.2);
+        } else {
+            vsp += grv * 0.5; // Gravedad suave para que empiece a caer si se queda quieto
+            vsp = clamp(vsp, -4, 4);
+        }
+    }
     else {
         if (move != 0) {
             hsp += move * _aceleracion;
@@ -335,7 +355,7 @@ if (!is_hit) {
         
         if (key_atk_x && !is_poisoned && !_is_grounded) {
             hsp = 0;
-            vsp = 0;               
+            vsp = 0;                
             slam_timer = 15;      
             slam_active = true;
             is_dashing = false;
@@ -515,7 +535,7 @@ if (!is_hit) {
 
         if (key_atk_x && !is_poisoned) {
         }
-    }    
+    }     
     else {
         // Validación estricta: Solo permite armas y ataques humanos si NO está transformado
         if (!is_transformed) {
@@ -530,7 +550,7 @@ var _finalMoveY = vsp;
 
 var _platform = noone;
 
-if (!(is_transformed && (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9)) && !(is_transformed && transform_type == 3 && is_dashing)) {
+if (!(is_transformed && (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10)) && !(is_transformed && transform_type == 3 && is_dashing)) {
     _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_movil);
     if (!_platform) _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_caida);
     if (!_platform) _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_atravesable);
@@ -629,7 +649,7 @@ if (!is_hit && !is_dead) {
         if (hsp > 0) image_xscale = abs(image_xscale);
         if (hsp < 0) image_xscale = -abs(image_xscale);
     }
-    if (is_transformed && (transform_type == 3 || transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9) && abs(hsp) > 0.1) {
+    if (is_transformed && (transform_type == 3 || transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10) && abs(hsp) > 0.1) {
         image_xscale = sign(hsp) * abs(image_xscale);
     }
 
@@ -670,6 +690,9 @@ if (!is_hit && !is_dead) {
                     sprite_index = spr_gaby_avion;
                     image_speed = 1;
                 }
+            } else if (transform_type == 10) {
+                // Sprite idle temporal para el tipo 10 (mientras se configuran las partes)
+                sprite_index = spr_gaby_medusa_idle; 
             }
         } else {
             if (current_weapon == 1) {
@@ -714,7 +737,19 @@ else {
             }
         }
         else if (transform_type == 9) {
-            sprite_index = spr_gaby_avion_hit;
+            if (variable_instance_exists(id, "golpe_bruja_especial") && golpe_bruja_especial) {
+                sprite_index = spr_gaby_avion_hit2; 
+            } else {
+                sprite_index = spr_gaby_avion_hit; 
+            }
+        }
+        else if (transform_type == 10) {
+            // Manejo del golpe especial de la medusa (Caso A con el gif de hit que adjuntaste)
+            if (variable_instance_exists(id, "golpe_medusa_especial") && golpe_medusa_especial) {
+                sprite_index = spr_gaby_medusa_hit2; // O el sprite del hit de globos
+            } else {
+                sprite_index = spr_gaby_medusa_hit; 
+            }
         }
     } 
     else {
@@ -733,6 +768,14 @@ else {
         image_blend = c_white;
         if (variable_instance_exists(id, "golpe_ninfa_especial")) {
             golpe_ninfa_especial = false;
+        }
+        
+        if (variable_instance_exists(id, "golpe_bruja_especial")) {
+            golpe_bruja_especial = false;
+        }
+
+        if (variable_instance_exists(id, "golpe_medusa_especial")) {
+            golpe_medusa_especial = false;
         }
     }
 }
