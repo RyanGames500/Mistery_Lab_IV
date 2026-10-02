@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"NINFA",
-    "path":"folders/OBJETOS/ENEMIGOS/NINFA.yy",
+    "path":"folders/OBJETOS/ENEMIGOS/ETAPA1/NINFA.yy",
   },
   "parentObjectId":{
     "name":"obj_enemy_parent",

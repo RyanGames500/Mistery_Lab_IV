@@ -12,7 +12,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"CANDY",
-    "path":"folders/OBJETOS/ENEMIGOS/CANDY.yy",
+    "path":"folders/OBJETOS/ENEMIGOS/ETAPA1/CANDY.yy",
   },
   "parentObjectId":{
     "name":"obj_enemy_parent",

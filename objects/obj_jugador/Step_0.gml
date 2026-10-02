@@ -692,7 +692,7 @@ if (!is_hit && !is_dead) {
                 }
             } else if (transform_type == 10) {
                 // Sprite idle temporal para el tipo 10 (mientras se configuran las partes)
-                sprite_index = spr_gaby_medusa_idle; 
+                sprite_index = spr_ramo_base2; 
             }
         } else {
             if (current_weapon == 1) {

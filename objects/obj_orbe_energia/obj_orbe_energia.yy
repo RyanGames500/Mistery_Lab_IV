@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"HADA ETERICA",
-    "path":"folders/OBJETOS/ENEMIGOS/HADA ETERICA.yy",
+    "path":"folders/OBJETOS/ENEMIGOS/ETAPA1/HADA ETERICA.yy",
   },
   "parentObjectId":null,
   "persistent":false,

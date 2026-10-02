@@ -11,7 +11,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"MEDUSA CELESTIAL",
-    "path":"folders/OBJETOS/ENEMIGOS/MEDUSA CELESTIAL.yy",
+    "path":"folders/OBJETOS/ENEMIGOS/ETAPA1/MEDUSA CELESTIAL.yy",
   },
   "parentObjectId":null,
   "persistent":false,

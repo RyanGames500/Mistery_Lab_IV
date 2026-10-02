@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"BRUJA VIENTO",
-    "path":"folders/OBJETOS/ENEMIGOS/BRUJA VIENTO.yy",
+    "path":"folders/OBJETOS/ENEMIGOS/ETAPA1/BRUJA VIENTO.yy",
   },
   "parentObjectId":null,
   "persistent":false,
