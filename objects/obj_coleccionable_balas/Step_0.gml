@@ -1,0 +1,1 @@
+y = ystart + sin(current_time * 0.005) * 2; 

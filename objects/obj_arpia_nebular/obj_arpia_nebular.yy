@@ -10,7 +10,7 @@
   "overriddenProperties":[],
   "parent":{
     "name":"ARPIA NEBULAR",
-    "path":"folders/OBJETOS/ENEMIGOS/ARPIA NEBULAR.yy",
+    "path":"folders/OBJETOS/ENEMIGOS/ETAPA1/ARPIA NEBULAR.yy",
   },
   "parentObjectId":{
     "name":"obj_enemy_parent",
