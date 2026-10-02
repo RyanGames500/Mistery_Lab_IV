@@ -74,6 +74,9 @@ switch (estado) {
             hsp = 0;
             cooldown_ataque = tiempo_choke;
             estado = ESTADO_GOLEM.CHOKE;
+            
+            screen_shake(6); // Sacude toda la pantalla de golpe por el impacto del Golem
+            
         }
         break;
         

@@ -1,4 +1,10 @@
+
 if (global.pausado) {
+    exit;
+}
+
+if (global.cinematica) {
+    hsp = 0;
     exit;
 }
 
@@ -545,8 +551,11 @@ if (!is_hit) {
     }
 } 
 
+// ===== CAMBIO: el viento de la corriente de la Reina se suma al movimiento final =====
 var _finalMoveX = hsp;
-var _finalMoveY = vsp;
+var _finalMoveY = vsp + viento_y;
+viento_y = 0;
+// ====================================================================================
 
 var _platform = noone;
 

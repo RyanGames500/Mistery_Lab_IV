@@ -1,4 +1,4 @@
-
+// --- SHAKE ---
 var _x_shake = 0;
 var _y_shake = 0;
 
@@ -10,40 +10,89 @@ if (shake_amount > 0.1) {
     shake_amount = 0;
 }
 
+// Al cambiar de room
+if (room != room_anterior) {
+    room_anterior = room;
+    iniciada = false;
+    cine_activa = false;
+    global.cinematica = false;
+    zoom_actual = 1;
+}
+
 if (room == rm_main) {
-    var _target_cam_w = 640; 
+    var _target_cam_w = 640;
     var _target_cam_h = 360;
-    
+
     camera_set_view_size(view_camera[0], _target_cam_w, _target_cam_h);
-    
-    var target_x = (room_width / 2) - (_target_cam_w / 2);
-    var target_y = (room_height / 2) - (_target_cam_h / 2);
-    
-    camera_set_view_pos(view_camera[0], target_x + _x_shake, target_y + _y_shake);
+
+    var _tx = (room_width / 2) - (_target_cam_w / 2);
+    var _ty = (room_height / 2) - (_target_cam_h / 2);
+
+    camera_set_view_pos(view_camera[0], round(_tx + _x_shake), round(_ty + _y_shake));
 
 } else {
 
-    camera_set_view_size(view_camera[0], cam_width, cam_height);
-    
-    if (instance_exists(obj_jugador)) {
-        var facing = 0;
-        if (obj_jugador.hsp != 0) {
-            facing = sign(obj_jugador.hsp);
+    // --- ZOOM (suave) ---
+    var _zoom_obj = cine_activa ? cine_zoom : 1;
+    zoom_actual = lerp(zoom_actual, _zoom_obj, 0.06);
+    var _w = cam_width / zoom_actual;
+    var _h = cam_height / zoom_actual;
+    camera_set_view_size(view_camera[0], round(_w), round(_h));
+
+    if (cine_activa) {
+        // --- MODO CINEMÁTICA: enfoca el objetivo ---
+        cine_timer--;
+        cam_x = lerp(cam_x, cine_x - _w / 2, cine_spd);
+        cam_y = lerp(cam_y, cine_y - _h / 2, cine_spd);
+
+        if (cine_timer <= 0) {
+            cine_activa = false;
+            global.cinematica = false;
         }
-        look_ahead = lerp(look_ahead, facing * 20, 0.05);
-        
-        var target_x = (obj_jugador.x + look_ahead) - (cam_width / 2);
-        var target_y = (obj_jugador.y - 116) - (cam_height / 2);
-        
-        var cam_x = camera_get_view_x(view_camera[0]);
-        var cam_y = camera_get_view_y(view_camera[0]);
-        
-        var new_x = lerp(cam_x, target_x, cam_spd);
-        var new_y = lerp(cam_y, target_y, cam_spd);
-        
-        new_x = clamp(new_x, 0, room_width - cam_width);
-        new_y = clamp(new_y, 0, room_height - cam_height);
-        
-        camera_set_view_pos(view_camera[0], new_x + _x_shake, new_y + _y_shake);
+
+    } else if (instance_exists(obj_jugador)) {
+        // --- MODO NORMAL ---
+        var _px = obj_jugador.x;
+        var _py = obj_jugador.y;
+        var _hsp = obj_jugador.hsp;
+
+        var _suelo = false;
+        with (obj_jugador) _suelo = place_meeting(x, y + 1, obj_wall);
+        if (_suelo) suelo_timer = min(suelo_timer + 1, 10); else suelo_timer = 0;
+
+        if (!iniciada) {
+            cam_x = _px - _w / 2;
+            cam_y = _py - _h * piso_pantalla;
+            iniciada = true;
+        }
+
+        // Horizontal con look ahead
+        if (abs(_hsp) > 0.1) facing = sign(_hsp);
+        look_ahead = lerp(look_ahead, facing * look_dist, 0.04);
+
+        var _target_x = (_px + look_ahead) - _w / 2;
+        cam_x = lerp(cam_x, _target_x, spd_x);
+
+        // Vertical
+        if (suelo_timer >= 6) {
+            var _target_y = _py - _h * piso_pantalla;
+            cam_y = lerp(cam_y, _target_y, spd_y);
+        } else {
+            var _rel = _py - cam_y;
+            var _lim_arriba = _h * borde_arriba;
+            var _lim_abajo = _h * borde_abajo;
+
+            if (_rel < _lim_arriba) {
+                cam_y = lerp(cam_y, _py - _lim_arriba, spd_borde);
+            } else if (_rel > _lim_abajo) {
+                cam_y = lerp(cam_y, _py - _lim_abajo, spd_borde);
+            }
+        }
     }
+
+    // Límites del room
+    cam_x = clamp(cam_x, 0, max(0, room_width - _w));
+    cam_y = clamp(cam_y, 0, max(0, room_height - _h));
+
+    camera_set_view_pos(view_camera[0], round(cam_x + _x_shake), round(cam_y + _y_shake));
 }

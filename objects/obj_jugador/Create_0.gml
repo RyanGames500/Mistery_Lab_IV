@@ -101,5 +101,10 @@ nube_cooldown = 0;
 tobogan_inflado_timer = 0;
 tobogan_dash_timer = 0;
 #endregion
+
+#region Viento (corriente de la Reina del Éter)
+viento_y = 0;
+#endregion
+
 // Estado Inicial
 estado = "idle";
