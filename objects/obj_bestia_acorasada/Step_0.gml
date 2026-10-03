@@ -1,117 +1,151 @@
 var oPlayer = obj_jugador;
 
-// --- CONTROL DEL EFECTO DE STUN / MIEL ---
-if (variable_instance_exists(id, "stun_timer") && stun_timer > 0) {
+// --- SÚPER ARMADURA: los golpes no la frenan mientras ataca ---
+if (estado == ESTADO_BESTIA.ALERTA || estado == ESTADO_BESTIA.EMBESTIDA) {
+    stun_timer = 0;
+}
+
+// --- STUN ---
+if (stun_timer > 0) {
     stun_timer--;
     hsp = 0;
     vsp = 0;
-    exit; 
+    exit;
 }
 
-if (variable_instance_exists(id, "miel_timer") && miel_timer > 0) {
+// --- MIEL (factor de velocidad que sí se aplica) ---
+var _f = 1;
+if (miel_timer > 0) {
     miel_timer--;
-    hsp *= 0.5; // Si le cae miel, su embestida pesada se vuelve torpe y lenta
+    _f = 0.5;
 }
 
-// Reducir cooldowns
-if (cooldown_ataque > 0) {
-    cooldown_ataque--;
-}
+if (timer > 0) timer--;
+if (cooldown_ataque > 0) cooldown_ataque--;
 
-// Aplicar gravedad constante si no está en el suelo
+// Gravedad
 if (!place_meeting(x, y + 1, obj_wall)) {
     vsp += grav;
 } else {
     vsp = 0;
 }
 
-// --- MÁQUINA DE ESTADOS DE LA BESTIA ACORAZADA ---
+// --- MÁQUINA DE ESTADOS ---
 switch (estado) {
+
     case ESTADO_BESTIA.PATRULLA:
-        hsp = dir_patrulla * vel_patrulla; // (Asegúrate de declarar dir_patrulla = 1 en el Create)
-        
-        image_xscale = sign(hsp);
-        if (image_xscale == 0) image_xscale = 1;
-        
-        // Control de límites de patrulla
-        if (x > xstart + limite_patrulla) dir_patrulla = -1;
-        if (x < xstart - limite_patrulla) dir_patrulla = 1;
-        
-        // --- DETECCIÓN DE GABY ---
-        if (instance_exists(oPlayer) && cooldown_ataque <= 0) {
-            var _dist_x = abs(x - oPlayer.x);
-            var _dist_y = abs(y - oPlayer.y);
-            
-            // Si Gaby está en su campo visual horizontal y a la misma altura aproximada
-            if (_dist_x <= rango_vision && _dist_y < 48) {
-                // Mira hacia donde está Gaby
-                dir_patrulla = (oPlayer.x > x) ? 1 : -1;
-                image_xscale = dir_patrulla;
-                
+        image_blend = c_white;
+        if (pausa > 0) pausa--;
+
+        // Límites de patrulla
+        if (x > xstart + limite_patrulla && dir_patrulla == 1) {
+            dir_patrulla = -1;
+            pausa = pausa_extremo;
+        }
+        if (x < xstart - limite_patrulla && dir_patrulla == -1) {
+            dir_patrulla = 1;
+            pausa = pausa_extremo;
+        }
+
+        // No se cae de las plataformas
+        if (place_meeting(x, y + 1, obj_wall)) {
+            var _bx = (dir_patrulla == 1) ? bbox_right + 4 : bbox_left - 4;
+            if (!position_meeting(_bx, bbox_bottom + 2, obj_wall)) {
+                dir_patrulla *= -1;
+                pausa = pausa_extremo;
+            }
+        }
+
+        hsp = (pausa > 0) ? 0 : dir_patrulla * vel_patrulla;
+        image_xscale = dir_patrulla;
+
+        // Solo corre cuando VE a Gaby (rango, misma altura, sin pared en medio)
+        if (cooldown_ataque <= 0 && instance_exists(oPlayer)) {
+            var _dx = abs(x - oPlayer.x);
+            var _dy = abs(y - oPlayer.y);
+            var _ve = !collision_line(x, y - 8, oPlayer.x, oPlayer.y, obj_wall, false, true);
+
+            if (_dx <= rango_vision && _dy < 48 && _ve) {
                 hsp = 0;
                 estado = ESTADO_BESTIA.ALERTA;
-                cooldown_ataque = 40; // Breve pausa de rugido/advertencia antes de correr
+                timer = tiempo_alerta;
             }
         }
         break;
-        
+
     case ESTADO_BESTIA.ALERTA:
         hsp = 0;
-        // Aquí puedes cambiar al sprite de "rugido" o prepararse para correr
-        if (cooldown_ataque <= 0) {
-            estado = ESTADO_BESTIA.EMBESTIDA;
+
+        // Sigue mirando a Gaby hasta el último momento
+        if (instance_exists(oPlayer)) {
+            dir_patrulla = (oPlayer.x > x) ? 1 : -1;
+            image_xscale = dir_patrulla;
+        }
+
+        // Aviso: parpadeo rojizo
+        image_blend = (timer mod 8 < 4) ? c_white : make_color_rgb(255, 170, 150);
+
+        if (timer <= 0) {
+            image_blend = c_white;
+            estado = ESTADO_BESTIA.EMBESTIDA;   // la dirección queda fijada AHORA
+            timer = embestida_max;
         }
         break;
-        
+
     case ESTADO_BESTIA.EMBESTIDA:
-        // Corre con fuerza y velocidad en la dirección fijada
         hsp = dir_patrulla * vel_embestida;
-        
-        // Si choca contra una pared durante la embestida, se cansa/aturde (aprovechar el terreno)
-        if (place_meeting(x + dir_patrulla, y, obj_wall)) {
+
+        // Si se acaba el suelo o el tiempo, frena (no corre para siempre)
+        var _fx = (dir_patrulla == 1) ? bbox_right + 8 : bbox_left - 8;
+        var _borde = place_meeting(x, y + 1, obj_wall) && !position_meeting(_fx, bbox_bottom + 2, obj_wall);
+
+        if (timer <= 0 || _borde) {
             hsp = 0;
-            cooldown_ataque = tiempo_recuperacion_carga;
             estado = ESTADO_BESTIA.REPOSO;
-            
-            // Temblor de pantalla por el peso de la bestia chocando
-            if (script_exists(asset_get_index("screen_shake"))) {
-                screen_shake(6);
-            }
+            timer = tiempo_derrape;
         }
         break;
-        
+
     case ESTADO_BESTIA.REPOSO:
         hsp = 0;
-        // Se queda cansada tras fallar la embestida contra un muro (¡ventana de castigo para Gaby!)
-        if (cooldown_ataque <= 0) {
-            // Regresa a su patrulla normal o se da la vuelta
+
+        // Si chocó con la pared se ve aturdida
+        if (timer > tiempo_derrape) {
+            image_blend = (timer mod 10 < 5) ? c_white : make_color_rgb(200, 220, 255);
+        } else {
+            image_blend = c_white;
+        }
+
+        if (timer <= 0) {
+            image_blend = c_white;
             dir_patrulla *= -1;
             estado = ESTADO_BESTIA.PATRULLA;
-            cooldown_ataque = 60; // Cooldown para volver a detectar
+            cooldown_ataque = 60;
         }
         break;
 }
 
 // --- COLISIONES HORIZONTALES ---
-if (place_meeting(x + hsp, y, obj_wall)) {
-    while (!place_meeting(x + sign(hsp), y, obj_wall)) {
-        x += sign(hsp);
+var _mx = hsp * _f;
+if (place_meeting(x + _mx, y, obj_wall)) {
+    while (!place_meeting(x + sign(_mx), y, obj_wall)) {
+        x += sign(_mx);
     }
-    
+
     if (estado == ESTADO_BESTIA.EMBESTIDA) {
+        // ¡Se estrelló! Larga ventana de castigo
         hsp = 0;
-        cooldown_ataque = tiempo_recuperacion_carga;
         estado = ESTADO_BESTIA.REPOSO;
-        
-        if (script_exists(asset_get_index("screen_shake"))) {
-            screen_shake(6);
-        }
+        timer = tiempo_recuperacion_carga;
+        screen_shake(6);
     } else {
         hsp = 0;
         dir_patrulla *= -1;
+        if (estado == ESTADO_BESTIA.PATRULLA) pausa = pausa_extremo;
     }
+} else {
+    x += _mx;
 }
-x += hsp;
 
 // --- COLISIONES VERTICALES ---
 if (place_meeting(x, y + vsp, obj_wall)) {
@@ -122,24 +156,23 @@ if (place_meeting(x, y + vsp, obj_wall)) {
 }
 y += vsp;
 
-// --- COLISIÓN Y DAÑO A GABY (Estándar seguro) ---
-if (place_meeting(x, y, oPlayer)) {
+// --- DAÑO A GABY ---
+if (instance_exists(oPlayer) && place_meeting(x, y, oPlayer)) {
+    var _fuerte = (estado == ESTADO_BESTIA.EMBESTIDA);
+
     with (oPlayer) {
         if (!is_dead && !is_transforming && !invincible) {
-            
-            player_take_damage(1, false, 1); 
+            player_take_damage(1, false, 1);
             if (global.hp <= 0) {
                 is_dead = true;
             }
-            
             invincible = true;
-            alarm[2] = 90; // Invulnerabilidad temporal
-            
-            // Empuje pesado por la embestida del rinoceronte
+            alarm[2] = 90;
+
             var _dir_empuje = sign(x - other.x);
             if (_dir_empuje == 0) _dir_empuje = 1;
-            hsp = _dir_empuje * 6; // Empuje fuerte
-            vsp = -4;            // Vuela un poco más alto por el impacto
+            hsp = _dir_empuje * (_fuerte ? 6 : 3);
+            vsp = _fuerte ? -4 : -3;
         }
     }
 }

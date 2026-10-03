@@ -1,57 +1,39 @@
+var _cy = (bbox_top + bbox_bottom) / 2;
+var _t = current_time;
 
+var _c1 = make_color_rgb(90, 200, 255);
+var _c2 = make_color_rgb(150, 110, 255);
 
+// Campo magnético
+var _a = 0;
+if (estado == ESTADO_IMAN.AVISO)  _a = 0.08 + 0.06 * sin(_t * 0.03);
+if (estado == ESTADO_IMAN.ACTIVO) _a = 0.16;
 
-// --- EFECTO DE CÍRCULO MAGNÉTICO ---
-if (magnet_cooldown <= 0 && magnet_duration > 0) {
-    draw_set_alpha(0.3);
-    draw_set_color(c_aqua);
-    draw_circle(x, y, rango_magnet * (magnet_duration / 60), true);
-    draw_set_alpha(1);
-    
-    // --- ZARCILLOS / "FIDEOS" MAGNÉTICOS ONDULANTES ---
-    // Inicializamos un temporizador interno para la animación si no existe
-    if (!variable_instance_exists(id, "magnet_timer")) {
-        magnet_timer = 0;
-    }
-    magnet_timer += 0.25; // Velocidad con la que se mueven y ondulan las líneas
-    
-    draw_set_color(c_aqua);
-    var _num_tendrils = 6; // Cantidad de "fideos" de energía
-    
-    for (var i = 0; i < _num_tendrils; i++) {
-        // Distribuimos las líneas en círculo y las hacemos girar suavemente
-        var _angle = (360 / _num_tendrils) * i + (magnet_timer * 8);
-        var _max_dist = rango_magnet * (magnet_duration / 60);
-        
-        var _prev_x = x;
-        var _prev_y = y;
-        
-        // Dividimos cada línea en segmentos para crear la curva suave tipo serpiente/fideo
-        var _segments = 6;
-        for (var j = 1; j <= _segments; j++) {
-            var _dist_ratio = j / _segments;
-            var _current_dist = _max_dist * _dist_ratio;
-            
-            // Efecto de ondulación con seno (crea la curva fluida)
-            var _wave = sin(magnet_timer + (j * 0.6) + i) * 10 * (1 - _dist_ratio);
-            
-            var _px = x + lengthdir_x(_current_dist, _angle) + lengthdir_x(_wave, _angle + 90);
-            var _py = y + lengthdir_y(_current_dist, _angle) + lengthdir_y(_wave, _angle + 90);
-            
-            // Dibujamos un trazo grueso y estilizado
-            draw_line_width(_prev_x, _prev_y, _px, _py, 2.5);
-            
-            _prev_x = _px;
-            _prev_y = _py;
+if (_a > 0) {
+    draw_set_alpha(_a);
+    draw_rectangle_color(x - rango_vision, _cy - alto_campo, x + rango_vision, _cy + alto_campo,
+        _c1, _c1, _c2, _c2, false);
+
+    // Líneas que viajan hacia ella (solo cuando atrae)
+    if (estado == ESTADO_IMAN.ACTIVO) {
+        draw_set_alpha(0.7);
+        for (var s = -1; s <= 1; s += 2) {
+            for (var i = 0; i < 6; i++) {
+                var _d = rango_vision - ((_t * 0.12 + i * 41) mod rango_vision);
+                var _yy = _cy - alto_campo + 14 + i * ((alto_campo * 2 - 28) / 5);
+                draw_line_width_color(x + s * _d, _yy, x + s * (_d + 14), _yy, 2, _c1, c_white);
+            }
         }
     }
+    draw_set_alpha(1);
 }
 
-// Dibuja el sprite normal de la ingeniera
-draw_self();
-// --- EFECTO VISUAL CUANDO ESTÁ CARGANDO (AVISO) ---
-if (cargando_iman) {
-    if ((magnet_cooldown % 6) < 3) {
-        draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, c_red, 0.6);
-    }
+// Aviso: anillo que se contrae hacia ella
+if (estado == ESTADO_IMAN.AVISO) {
+    var _r = 8 + (timer / tiempo_aviso) * 40;
+    draw_set_alpha(0.8);
+    draw_circle_color(x, _cy, _r, c_white, _c1, true);
+    draw_set_alpha(1);
 }
+
+draw_self();

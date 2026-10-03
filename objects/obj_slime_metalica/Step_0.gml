@@ -1,63 +1,131 @@
 var oPlayer = obj_jugador;
 
-// --- CONTROL DEL EFECTO DE STUN / MIEL ---
-if (variable_instance_exists(id, "stun_timer") && stun_timer > 0) {
+// --- STUN / MIEL ---
+if (stun_timer > 0) {
     stun_timer--;
     hsp = 0;
     vsp = 0;
-    exit; 
+    exit;
 }
 
-if (variable_instance_exists(id, "miel_timer") && miel_timer > 0) {
+var _f = 1;
+if (miel_timer > 0) {
     miel_timer--;
-    hsp *= 0.5; // Si cae en miel, se mueve y rebota mucho más lento
+    _f = 0.5;   // más lenta, sin dañar su velocidad real
 }
 
-// Aplicar gravedad constante
-vsp += grav;
+// --- ESTADOS ---
+switch (estado) {
 
-// --- COLISIONES HORIZONTALES ---
-if (place_meeting(x + hsp, y, obj_wall)) {
-    while (!place_meeting(x + sign(hsp), y, obj_wall)) {
-        x += sign(hsp);
+    case ESTADO_SLIME.REBOTANDO:
+        // Mira a Gaby mientras rebota
+        if (instance_exists(oPlayer)) dir = (oPlayer.x > x) ? 1 : -1;
+        break;
+
+    case ESTADO_SLIME.AGACHADA:
+        hsp = 0;
+        vsp = 0;
+        if (timer > 0) timer--;
+
+        if (timer <= 0) {
+            // Despega: aterriza donde estaba Gaby al agacharse
+            var _t_aire = (2 * abs(salto_vsp)) / grav;
+            var _dx = abs(objetivo_x - x);
+            hsp = dir * clamp(_dx / _t_aire, salto_hsp_min, salto_hsp_max);
+            vsp = salto_vsp;
+            esc_y = 1.25;
+            estado = ESTADO_SLIME.SALTO_LARGO;
+        }
+        break;
+
+    case ESTADO_SLIME.SALTO_LARGO:
+        // En el aire: la trayectoria ya no cambia
+        break;
+}
+
+// --- COLISIÓN HORIZONTAL ---
+var _mx = hsp * _f;
+if (_mx != 0 && place_meeting(x + _mx, y, obj_wall)) {
+    while (!place_meeting(x + sign(_mx), y, obj_wall)) {
+        x += sign(_mx);
     }
-    hsp *= -1; // Invierte la dirección horizontal si choca con una pared lateral
-}
-x += hsp;
-
-// Actualizar orientación del sprite según hacia dónde salta
-if (hsp != 0) {
-    image_xscale = sign(hsp);
+    hsp *= -0.6;   // rebota contra la pared
+} else {
+    x += _mx;
 }
 
-// --- COLISIONES VERTICALES Y REBOTE AUTOMÁTICO ---
+// --- GRAVEDAD Y COLISIÓN VERTICAL ---
+if (estado != ESTADO_SLIME.AGACHADA) vsp += grav;
+
 if (place_meeting(x, y + vsp, obj_wall)) {
     while (!place_meeting(x, y + sign(vsp), obj_wall)) {
         y += sign(vsp);
     }
-    
-    // Si toca el suelo, rebota inmediatamente hacia arriba de forma automática
-    vsp = vel_salto_rebote;
-    
-    // Opcional: un pequeño efecto de screen_shake muy ligero al rebotar contra el suelo
-    // if (abs(vsp) > 4) { screen_shake(2); }
+
+    if (vsp > 0) {
+        // --- ATERRIZA ---
+        esc_y = 0.65;
+
+        switch (estado) {
+
+            case ESTADO_SLIME.REBOTANDO:
+                hsp = 0;
+                rebotes++;
+                if (rebotes >= rebotes_para_salto && instance_exists(oPlayer)
+                    && abs(oPlayer.x - x) <= rango_vision && abs(oPlayer.y - y) < 96) {
+                    // Se agacha: aviso del salto largo
+                    dir = (oPlayer.x > x) ? 1 : -1;
+                    objetivo_x = oPlayer.x;
+                    estado = ESTADO_SLIME.AGACHADA;
+                    timer = tiempo_aviso;
+                    vsp = 0;
+                } else {
+                    vsp = vel_salto_rebote;
+                }
+                break;
+
+            case ESTADO_SLIME.SALTO_LARGO:
+                hsp = 0;
+                screen_shake(1);
+                estado = ESTADO_SLIME.REBOTANDO;
+                rebotes = 0;
+                rebotes_para_salto = irandom_range(2, 4);
+                vsp = vel_salto_rebote;
+                break;
+        }
+    } else {
+        // Choca con un techo
+        vsp = 0;
+    }
 }
 y += vsp;
 
-// --- DAÑO A GABY (Uso del estándar seguro) ---
-if (place_meeting(x, y, oPlayer)) {
+// --- VISUAL (la forma se anima en el Draw) ---
+image_xscale = dir;
+
+var _esc_obj = 1;
+if (estado == ESTADO_SLIME.AGACHADA)  _esc_obj = 0.6;
+else if (vsp < -2)                    _esc_obj = 1.2;
+esc_y = lerp(esc_y, _esc_obj, 0.25);
+
+// Parpadeo metálico mientras se agacha
+if (estado == ESTADO_SLIME.AGACHADA) {
+    image_blend = (timer mod 6 < 3) ? c_white : make_color_rgb(170, 200, 255);
+} else {
+    image_blend = c_white;
+}
+
+// --- DAÑO A GABY ---
+if (instance_exists(oPlayer) && place_meeting(x, y, oPlayer)) {
     with (oPlayer) {
         if (!is_dead && !is_transforming && !invincible) {
-            
-            player_take_damage(1, false, 1); 
+            player_take_damage(1, false, 1);
             if (global.hp <= 0) {
                 is_dead = true;
             }
-            
             invincible = true;
-            alarm[2] = 90; // Invulnerabilidad temporal
-            
-            // Empuje al tocar el slime
+            alarm[2] = 90;
+
             var _dir_empuje = sign(x - other.x);
             if (_dir_empuje == 0) _dir_empuje = 1;
             hsp = _dir_empuje * 4;
