@@ -10,3 +10,5 @@ amplitud_flotar = 2;
 
 cadencia_disparo = 90;
 timer_disparo = 0;
+hp = 30;            // ajusta por enemigo (Avatar 60, Dryad 20, etc.)
+hit_next = 0;       // evita que un solo golpe le pegue varias veces

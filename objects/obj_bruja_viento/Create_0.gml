@@ -4,4 +4,6 @@ amplitud_flotar = 2;
 y_inicial = y;
 timer_ataque = 0;
 cadencia_ataque = 150; 
-rango_vision = 400;   
+rango_vision = 400;  
+hp = 30;            // ajusta por enemigo (Avatar 60, Dryad 20, etc.)
+hit_next = 0;       // evita que un solo golpe le pegue varias veces

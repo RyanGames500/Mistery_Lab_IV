@@ -30,7 +30,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_golem_mecanic",
+    "path":"sprites/spr_golem_mecanic/spr_golem_mecanic.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

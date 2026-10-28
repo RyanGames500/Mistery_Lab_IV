@@ -9,3 +9,5 @@ y_inicial = y;
 escala_visual = 1;
 parpadeo_alerta = 0;
 cooldown_descanso = 0;
+hp = 30;            // ajusta por enemigo (Avatar 60, Dryad 20, etc.)
+hit_next = 0;       // evita que un solo golpe le pegue varias veces

@@ -19,3 +19,5 @@ vel_picada_v = 0;
 altura_patrulla_y = y;
 cooldown_ataque = 0;
 tiempo_espera_max = 120;
+hp = 30;            // ajusta por enemigo (Avatar 60, Dryad 20, etc.)
+hit_next = 0;       // evita que un solo golpe le pegue varias veces

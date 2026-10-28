@@ -15,3 +15,5 @@ intervalo_ataque = 180;
 duracion_desvanecer = 0;
 velocidad_caida = 10;
 impacto_suelo = false;
+hp = 30;            // ajusta por enemigo (Avatar 60, Dryad 20, etc.)
+hit_next = 0;       // evita que un solo golpe le pegue varias veces

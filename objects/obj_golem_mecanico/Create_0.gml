@@ -13,7 +13,7 @@ estado = ESTADO_GOLEM.PATRULLA;
 hsp = 0;
 vsp = 0;
 grav = 0.3;          // Gravedad para el suelo
-vel_patrulla = 1.2;  // Caminata lenta
+vel_patrulla = 0.9;  // Caminata lenta
 vel_carga = 5.5;     // Velocidad rápida de la embestida
 
 // Límites y detección
@@ -25,3 +25,6 @@ objetivo_x = 0;
 cooldown_ataque = 0;
 tiempo_espera_max = 90; // Tiempo de descanso tras cargar
 tiempo_choke = 60;      // Frames que se queda aturdida si choca contra la pared
+
+hp = 30;            // ajusta por enemigo (Avatar 60, Dryad 20, etc.)
+hit_next = 0;       // evita que un solo golpe le pegue varias veces

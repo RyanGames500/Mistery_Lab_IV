@@ -1,4 +1,10 @@
+
 if (global.pausado) {
+    exit;
+}
+
+if (global.cinematica) {
+    hsp = 0;
     exit;
 }
 
@@ -158,6 +164,7 @@ if (!is_hit) {
         move = 0;
     }
     current_spd = key_run ? run_spd : walk_spd;
+    current_spd *= vel_mult;   // CAMBIO: zonas de gravedad (Soberana)
 
     var _en_telarana = place_meeting(x, y, obj_tela_arana);
     if (_en_telarana) {
@@ -327,7 +334,7 @@ if (!is_hit) {
             }
         }
 
-        vsp += grv;
+        vsp += grv * grav_mult;   // CAMBIO: zonas de gravedad (Soberana)
 
         if (coyote_timer > 0 && jump_buffer > 0) {
             var _salto_base = is_transformed ? jump_spd_ball : jump_spd_standard;
@@ -337,9 +344,9 @@ if (!is_hit) {
             }
             
             if (_en_telarana) {
-                vsp = _salto_base * 0.5;
+                vsp = _salto_base * 0.5 * salto_mult;   // CAMBIO: zonas de gravedad
             } else {
-                vsp = _salto_base;
+                vsp = _salto_base * salto_mult;         // CAMBIO: zonas de gravedad
             }
             coyote_timer = 0; 
             jump_buffer = 0;
@@ -545,8 +552,11 @@ if (!is_hit) {
     }
 } 
 
+// ===== CAMBIO: el viento de la corriente de la Reina se suma al movimiento final =====
 var _finalMoveX = hsp;
-var _finalMoveY = vsp;
+var _finalMoveY = vsp + viento_y;
+viento_y = 0;
+// ====================================================================================
 
 var _platform = noone;
 
@@ -827,3 +837,8 @@ if (is_transformed && (transform_type == 1 || transform_type == 6)) {
         }
     }
 }
+
+// ===== CAMBIO: se reinician los multiplicadores de las zonas de gravedad (la zona los vuelve a poner cada frame) =====
+grav_mult = 1;
+salto_mult = 1;
+vel_mult = 1;
