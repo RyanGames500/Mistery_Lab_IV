@@ -39,11 +39,11 @@
     {"$GMFolder":"","%Name":"NORMAL","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/MUERTE/NORMAL.yy","name":"NORMAL","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"TRANSFORMACIONES","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES.yy","name":"TRANSFORMACIONES","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"ENEMIGOS","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS.yy","name":"ENEMIGOS","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"TF","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS/TF.yy","name":"TF","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"TF AVION","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS/TF AVION.yy","name":"TF AVION","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"TF MEDUSA","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS/TF MEDUSA.yy","name":"TF MEDUSA","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"partes de idle","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS/TF MEDUSA/partes de idle.yy","name":"partes de idle","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"TF NINFA","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS/TF NINFA.yy","name":"TF NINFA","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"TF","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS/TF.yy","name":"TF","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"POCIONES","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/POCIONES.yy","name":"POCIONES","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"ABEJA","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/POCIONES/ABEJA.yy","name":"ABEJA","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"CRISTAL","folderPath":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/POCIONES/CRISTAL.yy","name":"CRISTAL","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -120,7 +120,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.14.4.222",
+    "IDEVersion":"2026.0.0.16",
   },
   "name":"Mystery_Lab_IV",
   "resources":[
@@ -229,6 +229,7 @@
     {"id":{"name":"rm_galery_seccion2","path":"rooms/rm_galery_seccion2/rm_galery_seccion2.yy",},},
     {"id":{"name":"rm_init_vars","path":"rooms/rm_init_vars/rm_init_vars.yy",},},
     {"id":{"name":"rm_main","path":"rooms/rm_main/rm_main.yy",},},
+    {"id":{"name":"rm_plantilla_1","path":"rooms/rm_plantilla_1/rm_plantilla_1.yy",},},
     {"id":{"name":"rm_plantilla","path":"rooms/rm_plantilla/rm_plantilla.yy",},},
     {"id":{"name":"rm_selector_etapas","path":"rooms/rm_selector_etapas/rm_selector_etapas.yy",},},
     {"id":{"name":"rm_selector_niveles","path":"rooms/rm_selector_niveles/rm_selector_niveles.yy",},},
@@ -378,6 +379,7 @@
     {"roomId":{"name":"rm_galery_seccion2","path":"rooms/rm_galery_seccion2/rm_galery_seccion2.yy",},},
     {"roomId":{"name":"rm_selector_etapas","path":"rooms/rm_selector_etapas/rm_selector_etapas.yy",},},
     {"roomId":{"name":"rm_selector_niveles","path":"rooms/rm_selector_niveles/rm_selector_niveles.yy",},},
+    {"roomId":{"name":"rm_plantilla_1","path":"rooms/rm_plantilla_1/rm_plantilla_1.yy",},},
   ],
   "templateType":"game",
   "TextureGroups":[
