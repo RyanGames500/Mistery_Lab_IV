@@ -374,8 +374,8 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"rm_init_vars","path":"rooms/rm_init_vars/rm_init_vars.yy",},},
-    {"roomId":{"name":"rm_plantilla","path":"rooms/rm_plantilla/rm_plantilla.yy",},},
     {"roomId":{"name":"rm_main","path":"rooms/rm_main/rm_main.yy",},},
+    {"roomId":{"name":"rm_plantilla","path":"rooms/rm_plantilla/rm_plantilla.yy",},},
     {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"roomId":{"name":"rm_galery_seccion1","path":"rooms/rm_galery_seccion1/rm_galery_seccion1.yy",},},
     {"roomId":{"name":"rm_galery_seccion2","path":"rooms/rm_galery_seccion2/rm_galery_seccion2.yy",},},
