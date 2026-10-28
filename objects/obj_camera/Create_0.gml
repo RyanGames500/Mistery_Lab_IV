@@ -18,8 +18,8 @@ look_dist = 40;
 facing = 1;
 
 // Vertical
-piso_pantalla = 0.6;   // en el suelo, Gaby queda al 60% de la altura
-borde_arriba = 0.2;    // en el aire, si sube de aquí la cámara la sigue
+piso_pantalla = 0.8;   // en el suelo, Gaby queda al 60% de la altura
+borde_arriba = 0.5;    // en el aire, si sube de aquí la cámara la sigue
 borde_abajo = 0.75;    // si cae más abajo de aquí la cámara la sigue
 suelo_timer = 0;
 
