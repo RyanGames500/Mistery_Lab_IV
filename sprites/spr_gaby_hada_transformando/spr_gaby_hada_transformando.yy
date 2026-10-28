@@ -1,6 +1,6 @@
 {
   "$GMSprite":"v2",
-  "%Name":"spr_gaby_hada_transforman",
+  "%Name":"spr_gaby_hada_transformando",
   "bboxMode":2,
   "bbox_bottom":37,
   "bbox_left":-2,
@@ -40,19 +40,19 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"e26548a5-c502-4cc9-a6ed-c6dab9055223","blendMode":0,"displayName":"default","isLocked":false,"name":"e26548a5-c502-4cc9-a6ed-c6dab9055223","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_gaby_hada_transforman",
+  "name":"spr_gaby_hada_transformando",
   "nineSlice":null,
   "origin":9,
   "parent":{
-    "name":"TF",
-    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS/TF.yy",
+    "name":"TF HADA",
+    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS/TF HADA.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"v1",
-    "%Name":"spr_gaby_hada_transforman",
+    "%Name":"spr_gaby_hada_transformando",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -76,7 +76,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_gaby_hada_transforman",
+    "name":"spr_gaby_hada_transformando",
     "playback":1,
     "playbackSpeed":12.0,
     "playbackSpeedType":0,
@@ -88,64 +88,64 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e7e65a95-0781-40d5-88cb-e00b0c466010","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e7e65a95-0781-40d5-88cb-e00b0c466010","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"587215e2-63e9-4379-9534-0cacfd149c82","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"3d9d6465-9e4b-41d5-b1fa-348fc90052eb","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"3d9d6465-9e4b-41d5-b1fa-348fc90052eb","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"ea6e5ab8-a418-4d8e-9fd2-fb728aa6de4b","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"3fefe909-1a1b-484c-942b-fe4af313377d","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"3fefe909-1a1b-484c-942b-fe4af313377d","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"c1cc4312-8a0c-4f7d-91f2-d81e67827680","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"ee0d3099-77c0-4a43-ab85-cbe51c032c33","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"ee0d3099-77c0-4a43-ab85-cbe51c032c33","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"e2771eba-04d7-4cb7-80ac-74cc881c8664","IsCreationKey":false,"Key":3.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"1e8b6984-8d22-4e25-b0d9-0b69181b2b0f","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"1e8b6984-8d22-4e25-b0d9-0b69181b2b0f","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"c7402cf0-e4e8-4c80-9b62-498792d46ed6","IsCreationKey":false,"Key":4.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a094769a-3b11-42d6-bff1-5d81afca0949","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"a094769a-3b11-42d6-bff1-5d81afca0949","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"895cbeac-c72a-4a49-8a9f-10835a4b30ef","IsCreationKey":false,"Key":5.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0a205ac1-a10c-47ad-b72c-3254b2b6eb9a","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"0a205ac1-a10c-47ad-b72c-3254b2b6eb9a","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"7ef6f6be-696e-4da0-8cd9-5bd8c3b1eba4","IsCreationKey":false,"Key":6.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"acd4932c-1756-4dc8-9900-7e518b314fc2","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"acd4932c-1756-4dc8-9900-7e518b314fc2","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"6a6b76e1-aa74-4944-9b1c-23cf050b7883","IsCreationKey":false,"Key":7.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"db9c35df-6023-43df-880c-528a79590fc8","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"db9c35df-6023-43df-880c-528a79590fc8","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"d22296a6-c736-4716-9c09-d9e3337807bf","IsCreationKey":false,"Key":8.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f299139c-e64e-468b-94f7-67c2d6295495","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f299139c-e64e-468b-94f7-67c2d6295495","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"f9584871-bc46-4010-adf4-1761e13e93c0","IsCreationKey":false,"Key":9.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"9c069712-ebdf-4c2c-a8ed-5014dba27c01","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"9c069712-ebdf-4c2c-a8ed-5014dba27c01","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"deac3f54-31b6-4dd9-86f0-057fb86b4cdf","IsCreationKey":false,"Key":10.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"18d74b6a-d3ab-4314-9df1-ea322dabd1bb","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"18d74b6a-d3ab-4314-9df1-ea322dabd1bb","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"4e4e95b2-6696-49a6-adeb-ec80e0e9c2db","IsCreationKey":false,"Key":11.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"159bdd89-cce4-4b8f-bf0b-42ac689d181c","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"159bdd89-cce4-4b8f-bf0b-42ac689d181c","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"59d4e7a0-ad75-4e55-9e20-430f583b4a29","IsCreationKey":false,"Key":12.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"92f2f2ae-d004-4cf8-99e0-dd71890087c9","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"92f2f2ae-d004-4cf8-99e0-dd71890087c9","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"3860a797-7ecc-42ef-8258-46ae18bbe6f2","IsCreationKey":false,"Key":13.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"aff7b642-2981-41f3-bd4b-996269aaea5c","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"aff7b642-2981-41f3-bd4b-996269aaea5c","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"d5885c42-c1c8-4a6f-96b7-cdb92600a402","IsCreationKey":false,"Key":14.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"95ce999b-74b9-4ad3-8aea-208a001ceea8","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"95ce999b-74b9-4ad3-8aea-208a001ceea8","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"70c60f70-4877-4dbf-a93b-96b7970a346b","IsCreationKey":false,"Key":15.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8c208f53-6b63-49e4-8a8d-fdd0fff74d76","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"8c208f53-6b63-49e4-8a8d-fdd0fff74d76","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"9a55c0d3-45ef-4a43-bd93-fd067ac4d2d7","IsCreationKey":false,"Key":16.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"4a111b62-a4a0-40e6-a58f-750cd1e7219a","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"4a111b62-a4a0-40e6-a58f-750cd1e7219a","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"870d6fb6-3cbd-4156-98e6-9d6271d771bb","IsCreationKey":false,"Key":17.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e42f32dd-2fb7-49e5-ab4f-572467283290","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"e42f32dd-2fb7-49e5-ab4f-572467283290","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"1d8c4286-4524-4c4a-bf9f-5a558243a336","IsCreationKey":false,"Key":18.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"1f9c3409-6dca-4581-8019-5c91a7478a0f","path":"sprites/spr_gaby_hada_transforman/spr_gaby_hada_transforman.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"1f9c3409-6dca-4581-8019-5c91a7478a0f","path":"sprites/spr_gaby_hada_transformando/spr_gaby_hada_transformando.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"ae9bd5a9-fa42-4ccc-adfb-0dd2a31da26b","IsCreationKey":false,"Key":19.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
