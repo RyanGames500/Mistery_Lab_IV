@@ -259,7 +259,9 @@
     {"name":"sprGabyCristal_run","order":1,"path":"sprites/sprGabyCristal_run/sprGabyCristal_run.yy",},
     {"name":"sprTransform1","order":3,"path":"sprites/sprTransform1/sprTransform1.yy",},
     {"name":"sprVentilador","order":7,"path":"sprites/sprVentilador/sprVentilador.yy",},
+    {"name":"Tileset_etapa_1","order":6,"path":"sprites/Tileset_etapa_1/Tileset_etapa_1.yy",},
     {"name":"vPad_Base","order":5,"path":"sprites/vPad_Base/vPad_Base.yy",},
     {"name":"vPad","order":4,"path":"sprites/vPad/vPad.yy",},
+    {"name":"TileSet1","order":7,"path":"tilesets/TileSet1/TileSet1.yy",},
   ],
 }
