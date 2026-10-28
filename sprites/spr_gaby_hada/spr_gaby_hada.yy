@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":7,
   "parent":{
-    "name":"TF",
-    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS/TF.yy",
+    "name":"TF HADA",
+    "path":"folders/ANIMACIONES/PLAYERS/GABY/TRANSFORMACIONES/ENEMIGOS/TF HADA.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
