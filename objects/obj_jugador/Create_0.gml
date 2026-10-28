@@ -105,6 +105,10 @@ tobogan_dash_timer = 0;
 #region Viento (corriente de la Reina del Éter)
 viento_y = 0;
 #endregion
-
+#region Física por zonas (gravedad de la Soberana)
+grav_mult = 1;
+salto_mult = 1;
+vel_mult = 1;
+#endregion
 // Estado Inicial
 estado = "idle";
