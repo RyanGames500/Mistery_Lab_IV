@@ -73,7 +73,7 @@
     },
     "name":"spr_gaby_hada_hit2",
     "playback":1,
-    "playbackSpeed":9.0,
+    "playbackSpeed":12.0,
     "playbackSpeedType":0,
     "resourceType":"GMSequence",
     "resourceVersion":"2.0",

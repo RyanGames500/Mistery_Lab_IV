@@ -80,7 +80,7 @@ if (instance_exists(oPlayer)) {
                                 
                                 transform_type = 10;
                                 sprite_index = spr_gaby_medusa_transformando; // Cambia por tu sprite de transformación
-                                
+                                fx_transformacion(x, y, transform_type);
                                 electrificado_timer = 45;
                                 
                                 // Desbloqueo seguro en galería

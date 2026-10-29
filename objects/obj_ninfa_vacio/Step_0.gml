@@ -90,7 +90,7 @@ if (instance_exists(oPlayer)) {
                             
                             transform_type = 8;
                             sprite_index = spr_gaby_ninfa_transformando; 
-                            
+                            fx_transformacion(x, y, transform_type);
                             other.duracion_anim_player = sprite_get_number(spr_gaby_ninfa_transformando);
                             
                             if (variable_global_exists("galeria_items")) {

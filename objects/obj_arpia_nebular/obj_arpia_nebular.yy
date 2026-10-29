@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_enemy_test",
-    "path":"sprites/spr_enemy_test/spr_enemy_test.yy",
+    "name":"spr_arpia",
+    "path":"sprites/spr_arpia/spr_arpia.yy",
   },
   "spriteMaskId":null,
   "visible":true,

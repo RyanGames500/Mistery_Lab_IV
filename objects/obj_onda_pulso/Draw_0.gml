@@ -1,0 +1,10 @@
+var _a = clamp(vida / vida_max, 0, 1);
+draw_set_alpha(_a);
+draw_set_color(make_color_rgb(159, 244, 255));
+draw_circle(x, y, radio, true);
+draw_circle(x, y, radio - 1, true);
+draw_set_color(c_white);
+draw_set_alpha(_a * 0.7);
+draw_circle(x, y, radio * 0.8, true);
+draw_set_alpha(1);
+draw_set_color(c_white);
