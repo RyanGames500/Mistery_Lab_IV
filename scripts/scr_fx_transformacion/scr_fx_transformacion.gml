@@ -22,6 +22,7 @@ function fx_datos_forma(_tipo) {
         case 10: return { nombre: "MEDUSA", c1: make_color_rgb(82, 220, 255),  c2: make_color_rgb(122, 92, 255) };
         case 11: return { nombre: "HADA",   c1: make_color_rgb(255, 122, 217), c2: make_color_rgb(181, 139, 255) };
         case 12: return { nombre: "ARPIA",  c1: make_color_rgb(255, 162, 58),  c2: make_color_rgb(214, 74, 42) };
+        case 13: return { nombre: "IMAN",   c1: make_color_rgb(90, 200, 255),  c2: make_color_rgb(230, 50, 60) };
     }
     return { nombre: "", c1: c_white, c2: c_aqua };
 }
