@@ -62,12 +62,8 @@ switch (estado) {
             var _m = -sign(_dx) * min(_f, abs(_dx) - distancia_nucleo);
 
             // Mueve a Gaby respetando las paredes
-            // (si es imán y está pegada a algo, no la puede despegar)
             with (oPlayer) {
-                if (is_transformed && transform_type == 13 && iman_pegado) {
-                    // se queda donde está
-                }
-                else if (!place_meeting(x + _m, y, obj_wall)) {
+                if (!place_meeting(x + _m, y, obj_wall)) {
                     x += _m;
                 } else {
                     var _s = sign(_m);
@@ -98,55 +94,17 @@ switch (estado) {
 if (instance_exists(oPlayer) && place_meeting(x, y, oPlayer)) {
     with (oPlayer) {
         if (!is_dead && !is_transforming && !invincible) {
+            player_take_damage(1, false, 1);
+            if (global.hp <= 0) {
+                is_dead = true;
+            }
+            invincible = true;
+            alarm[2] = 90;
+
             var _dir_empuje = sign(x - other.x);
             if (_dir_empuje == 0) _dir_empuje = 1;
-
-            // CASO A: si ya es imán (TF 13) -> golpe especial (se vuelve imán metálico)
-            if (is_transformed && transform_type == 13) {
-                if (!is_hit) {
-                    player_take_damage(1, false, 1);
-                    image_speed = 1;
-                    golpe_iman_especial = true;
-                    iman_pegado = false;
-                    hsp = _dir_empuje * 5;
-                    vsp = -3;
-                }
-            }
-            // CASO B: primera vez -> se transforma en imán
-            else {
-                global.hp -= 1;
-                if (global.hp <= 0) { is_dead = true; }
-
-                invincible = true;
-                alarm[2] = 90;
-
-                if (!is_dead) {
-                    golpe_iman_especial = false;
-                    iman_pegado = false;
-                    iman_ang = 0;
-
-                    is_transforming = true;
-                    is_transformed = false;
-                    hsp = 0;
-                    vsp = 0;
-                    image_index = 0;
-                    image_speed = 1;
-
-                    transform_type = 13;
-                    sprite_index = spr_gaby_iman_transformando;
-                    fx_transformacion(x, y, transform_type);
-
-                    // Desbloqueo seguro en galería
-                    if (variable_global_exists("galeria_items")) {
-                        if (transform_type < array_length(global.galeria_items)) {
-                            global.galeria_items[transform_type].unlocked = true;
-                            if (script_exists(asset_get_index("guardar_galeria"))) {
-                                guardar_galeria();
-                            }
-                        }
-                    }
-                }
-            }
+            hsp = _dir_empuje * 5;
+            vsp = -3;
 
             other.golpeo_gaby = true;
         }

@@ -440,123 +440,6 @@ if (!is_hit) {
             }
         }
     }
-    // --- TRANSFORMACIÓN 13 (Imán / Ingeniera Magnética): se pega y avanza por partes ---
-    else if (is_transformed && transform_type == 13) {
-        var _x_hold = keyboard_check(ord("X"));
-        var _dir_y = (keyboard_check(vk_down) || keyboard_check(ord("S"))) - (keyboard_check(vk_up) || keyboard_check(ord("W")));
-
-        is_dashing = false;
-        nube_fase_active = false;
-        slam_timer = 0;
-
-        if (iman_suelta_cd > 0) iman_suelta_cd--;
-
-        if (!iman_pegado) {
-            // Camina y salta, pero más pesada que Gaby normal
-            var _iman_spd = iman_vel * vel_mult;
-            if (_en_telarana) _iman_spd *= 0.4;
-
-            if (move != 0) {
-                hsp += move * _aceleracion;
-                hsp = clamp(hsp, -_iman_spd, _iman_spd);
-                image_xscale = sign(move) * abs(image_xscale);
-            } else {
-                hsp = lerp(hsp, 0, _friccion);
-                if (abs(hsp) < 0.1) hsp = 0;
-            }
-
-            vsp += grv * iman_grv_mult * grav_mult;
-            vsp = min(vsp, 10);
-
-            if (coyote_timer > 0 && jump_buffer > 0) {
-                vsp = iman_salto * salto_mult;
-                if (_en_telarana) vsp *= 0.5;
-                coyote_timer = 0;
-                jump_buffer = 0;
-            }
-
-            iman_sx = lerp(iman_sx, 1, 0.2);
-            iman_sy = lerp(iman_sy, 1, 0.2);
-
-            // Mantener X: se pega a la superficie que esté tocando
-            if (_x_hold && iman_suelta_cd <= 0) {
-                var _sup = "";
-                if (place_meeting(x - 1, y, obj_wall)) _sup = "izq";
-                else if (place_meeting(x + 1, y, obj_wall)) _sup = "der";
-                else if (place_meeting(x, y - 1, obj_wall)) _sup = "techo";
-                else if (place_meeting(x, y + 1, obj_wall)) _sup = "suelo";
-
-                if (_sup != "") {
-                    iman_pegado = true;
-                    iman_superficie = _sup;
-                    hsp = 0;
-                    vsp = 0;
-                    iman_paso_timer = 0;
-                    iman_paso_cd = 0;
-                }
-            }
-        }
-        else {
-            // Hacia dónde está la superficie
-            var _sx = 0;
-            var _sy = 0;
-            switch (iman_superficie) {
-                case "izq":   _sx = -1; break;
-                case "der":   _sx = 1;  break;
-                case "techo": _sy = -1; break;
-                default:      _sy = 1;  break;
-            }
-            var _horizontal = (_sy != 0); // en suelo/techo avanza a los lados, en paredes arriba/abajo
-            hsp = 0;
-            vsp = 0;
-
-            if (iman_paso_timer > 0) {
-                // Pasito en curso (arranca suave y frena suave)
-                iman_paso_timer--;
-                var _t = 1 - (iman_paso_timer / iman_paso_dur);
-                var _e = (_t < 0.5) ? (2 * _t * _t) : (1 - power(-2 * _t + 2, 2) / 2);
-                var _meta = iman_paso_desde + iman_paso_dir * iman_paso_dist * _e;
-                if (_horizontal) hsp = _meta - x; else vsp = _meta - y;
-
-                // Se estira al avanzar, como gusanito
-                var _k = sin(_t * pi);
-                iman_sx = 1 + _k * 0.3;
-                iman_sy = 1 - _k * 0.2;
-
-                if (iman_paso_timer <= 0) iman_paso_cd = iman_paso_pausa;
-            }
-            else {
-                iman_sx = lerp(iman_sx, 1, 0.3);
-                iman_sy = lerp(iman_sy, 1, 0.3);
-                if (iman_paso_cd > 0) iman_paso_cd--;
-
-                var _dir = _horizontal ? move : _dir_y;
-                if (_dir != 0 && iman_paso_cd <= 0) {
-                    iman_paso_timer = iman_paso_dur;
-                    iman_paso_dir = sign(_dir);
-                    iman_paso_desde = _horizontal ? x : y;
-                    if (_horizontal) image_xscale = sign(_dir) * abs(image_xscale);
-                }
-            }
-
-            // Si se acabó la superficie, se despega y cae
-            if (iman_paso_timer <= 0 && !place_meeting(x + _sx * 2, y + _sy * 2, obj_wall)) {
-                iman_pegado = false;
-            }
-
-            // Soltar X: se despega
-            if (!_x_hold) {
-                iman_pegado = false;
-                hsp = -_sx * 2;
-            }
-            // Pegada al suelo: arriba/W la hace saltar despegándose
-            else if (key_jump && iman_superficie == "suelo") {
-                iman_pegado = false;
-                iman_suelta_cd = 10;
-                vsp = iman_salto * salto_mult;
-            }
-        }
-    }
     else {
         if (move != 0) {
             hsp += move * _aceleracion;
@@ -827,64 +710,6 @@ if (!is_hit) {
             }
         }
     }
-    // --- TRANSFORMACIÓN 13 (Imán): Z = repeler ---
-    else if (is_transformed && transform_type == 13) {
-        if (iman_repel_cd > 0) iman_repel_cd--;
-
-        if (key_atk_z && !is_poisoned && iman_repel_cd <= 0) {
-            iman_repel_cd = iman_repel_cd_max;
-            var _cx = x;
-            var _cy = (bbox_top + bbox_bottom) / 2;
-            iman_onda_timer = 20;
-            iman_onda_x = _cx;
-            iman_onda_y = _cy;
-            screen_shake(2);
-
-            // Empuja a los enemigos cercanos (los que se pueden aturdir) y los frena un momento
-            with (all) {
-                if (id != other.id && variable_instance_exists(id, "stun_timer")) {
-                    var _ex = (bbox_left + bbox_right) / 2;
-                    var _ey = (bbox_top + bbox_bottom) / 2;
-                    if (point_distance(_cx, _cy, _ex, _ey) < other.iman_repel_radio) {
-                        stun_timer = max(stun_timer, 40);
-                        var _dir_e = sign(_ex - _cx);
-                        if (_dir_e == 0) _dir_e = 1;
-                        array_push(other.iman_empujados, { inst: id, vel: _dir_e * other.iman_repel_fuerza });
-                    }
-                }
-            }
-
-            // Si estaba pegada, se repele de la superficie y sale disparada (salto magnético)
-            if (iman_pegado) {
-                iman_pegado = false;
-                iman_suelta_cd = 12;
-                iman_paso_timer = 0;
-                switch (iman_superficie) {
-                    case "izq":   hsp = 10;  vsp = -5;  break;
-                    case "der":   hsp = -10; vsp = -5;  break;
-                    case "techo": hsp = 0;   vsp = 8;   break;
-                    default:      hsp = 0;   vsp = -11 * salto_mult; break;
-                }
-            }
-        }
-
-        // Mueve a los enemigos empujados respetando las paredes (se van frenando)
-        for (var i = array_length(iman_empujados) - 1; i >= 0; i--) {
-            var _emp = iman_empujados[i];
-            if (!instance_exists(_emp.inst) || abs(_emp.vel) < 0.5) {
-                array_delete(iman_empujados, i, 1);
-                continue;
-            }
-            with (_emp.inst) {
-                if (!place_meeting(x + _emp.vel, y, obj_wall)) {
-                    x += _emp.vel;
-                } else {
-                    _emp.vel = 0;
-                }
-            }
-            _emp.vel *= 0.85;
-        }
-    }
     else {
         if (!is_transformed) {
             if (key_atk_z && !is_attacking && !is_poisoned) { current_weapon = 1; is_attacking = true; is_shooting = false; image_index = 0; }
@@ -899,7 +724,7 @@ viento_y = 0;
 
 var _platform = noone;
 
-if (!(is_transformed && (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10 || transform_type == 11 || transform_type == 12)) && !(is_transformed && transform_type == 3 && is_dashing) && !(is_transformed && transform_type == 13 && iman_pegado)) {
+if (!(is_transformed && (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10 || transform_type == 11 || transform_type == 12)) && !(is_transformed && transform_type == 3 && is_dashing)) {
     _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_movil);
     if (!_platform) _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_caida);
     if (!_platform) _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_atravesable);
@@ -1048,9 +873,6 @@ if (!is_hit && !is_dead) {
             else if (transform_type == 12) {
                 sprite_index = spr_gaby_arpia;
             }
-            else if (transform_type == 13) {
-                sprite_index = spr_gaby_iman;
-            }
         } else {
             if (current_weapon == 1) {
                 sprite_index = (_is_grounded) ? (hsp != 0 ? sprGaby_walk : sprGaby_idle) : (vsp < 0 ? spr_jump_up : spr_jump_fall);
@@ -1121,15 +943,6 @@ else {
                 sprite_index = spr_gaby_arpia_hit;
             }
         }
-        else if (transform_type == 13) {
-            iman_pegado = false;
-            // Golpe especial de la Ingeniera: se vuelve imán metálico
-            if (golpe_iman_especial) {
-                sprite_index = spr_gaby_iman_hit2;
-            } else {
-                sprite_index = spr_gaby_iman; // (no hay sprite de hit normal todavía: parpadea en rojo en el Draw)
-            }
-        }
     } 
     else {
         image_blend = c_white;
@@ -1164,8 +977,6 @@ else {
         if (variable_instance_exists(id, "golpe_arpia_especial")) {
             golpe_arpia_especial = false;
         }
-
-        golpe_iman_especial = false;
     }
 }
 
