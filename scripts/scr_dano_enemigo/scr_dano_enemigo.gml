@@ -13,4 +13,4 @@ function enemigo_recibir_dano(_e, _dano, _stun) {
             instance_destroy();
         }
     }
-}
+}///end
