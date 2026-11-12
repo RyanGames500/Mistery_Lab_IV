@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_enemy_test",
-    "path":"sprites/spr_enemy_test/spr_enemy_test.yy",
+    "name":"spr_hada",
+    "path":"sprites/spr_hada/spr_hada.yy",
   },
   "spriteMaskId":null,
   "visible":true,

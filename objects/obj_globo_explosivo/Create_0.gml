@@ -1,0 +1,9 @@
+sprite_index = spr_ramo_partes;
+image_index = GLOBO_Z;
+image_speed = 0;
+image_xscale = 0.45;
+image_yscale = 0.45;
+hsp = 0;
+t = 0;
+fase = random(6);
+base_y = y;

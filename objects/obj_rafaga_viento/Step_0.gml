@@ -39,7 +39,7 @@ if (place_meeting(x, y, obj_jugador)) {
                 
                 transform_type = 9;
                 sprite_index = spr_gaby_avion_transformando;
-                
+                fx_transformacion(x, y, transform_type);
                 // Desbloqueo seguro en galería
                 if (variable_global_exists("galeria_items")) {
                     if (transform_type < array_length(global.galeria_items)) {

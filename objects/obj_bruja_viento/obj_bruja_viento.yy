@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_Wall_1",
-    "path":"sprites/spr_Wall_1/spr_Wall_1.yy",
+    "name":"spr_bruja",
+    "path":"sprites/spr_bruja/spr_bruja.yy",
   },
   "spriteMaskId":null,
   "visible":true,
