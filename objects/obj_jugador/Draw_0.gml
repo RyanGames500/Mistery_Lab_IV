@@ -65,36 +65,70 @@ else if (is_transformed && transform_type == 4) {
     draw_sprite_ext(sprite_index, image_index, x, y, _final_xscale, _final_yscale, image_angle, _blend_actual, _alpha_actual);
 }
 else if (is_transformed && transform_type == 10) {
+    globos_medusa_dibujar();
+}
+else if (is_transformed && (transform_type == 11 || transform_type == 12)) {
+    // --- EFECTO RESPIRACIÓN / GELATINA (Hada y Arpia) ---
+    var _gelatin_time = current_time * 0.006;
+    var _stretch_x = sin(_gelatin_time) * 0.035;
+    var _stretch_y = cos(_gelatin_time) * 0.035;
 
-    // --- 1. DIBUJAR EL SPRITE BASE DE COLISIÓN/FONDO PRIMERO ---
-    // (Esto hace que se vea el nudo y las cuerdas base de tu imagen Layer 7)
-    draw_self(); 
+    if (abs(hsp) > 0.2) {
+        _stretch_x += sign(hsp) * (abs(hsp) * 0.015);
+        _stretch_y -= abs(hsp) * 0.015;
+    }
+    if (abs(vsp) > 0.2) {
+        _stretch_y += (vsp * 0.012);
+        _stretch_x -= abs(vsp) * 0.008;
+    }
 
-    var _num_partes = 11; // cantidad de subimágenes de spr_ramo_partes
+    var _final_xscale = image_xscale + (_stretch_x * escala_tf);
+    var _final_yscale = image_yscale + (_stretch_y * escala_tf);
 
-    for (var i = 0; i < _num_partes; i++) {
+    draw_sprite_ext(sprite_index, image_index, x, y, _final_xscale, _final_yscale, image_angle, image_blend, image_alpha);
+}
+else if (is_transformed && transform_type == 13) {
+    // --- IMÁN: gira para que los polos miren a la superficie donde está pegada ---
+    var _ang_meta = 0;
+    var _off_x = 0;
+    var _off_y = 0;
+    if (iman_pegado && !is_hit) {
+        switch (iman_superficie) {
+            case "suelo": _ang_meta = 180; _off_y = -12; break;
+            case "techo": _ang_meta = 0;   _off_y = 12;  break;
+            case "izq":   _ang_meta = 90;  _off_x = 13;  break;
+            case "der":   _ang_meta = 270; _off_x = -13; break;
+        }
+    }
+    iman_ang += angle_difference(_ang_meta, iman_ang) * 0.25;
 
-        // Fase distinta por pieza para que no oscilen todas sincronizadas
-        var _fase = i * 0.6;
+    // Gira desde el centro del imán (el origen del sprite está abajo)
+    var _medio = 33 * abs(image_yscale);
+    var _cx = x + _off_x;
+    var _cy = y - _medio + _off_y;
+    var _dx = _cx + lengthdir_x(_medio, iman_ang - 90);
+    var _dy = _cy + lengthdir_y(_medio, iman_ang - 90);
 
-        // --- Viento y balanceo fluido ---
-        var _viento_time = current_time * 0.0015 + _fase;
-        var _viento_x = sin(_viento_time) * 4; // Desplazamiento horizontal suave
+    var _blend = image_blend;
+    if (is_hit && !golpe_iman_especial && ((current_time div 80) mod 2) == 0) _blend = c_red;
 
-        // --- Rotación de péndulo (clave para el efecto de globo) ---
-        var _rotacion = sin(_viento_time) * 5.5; 
+    // Brillo azul cuando está imantada
+    if (iman_pegado) {
+        gpu_set_blendmode(bm_add);
+        draw_sprite_ext(sprite_index, image_index, _dx, _dy, image_xscale * iman_sx * 1.08, image_yscale * iman_sy * 1.08, iman_ang, make_color_rgb(90, 200, 255), 0.35 * image_alpha);
+        gpu_set_blendmode(bm_normal);
+    }
 
-        // --- Deformación tipo globo (gelatina) ---
-        var _gelatin_time = current_time * 0.006 + _fase;
-        var _stretch_x = sin(_gelatin_time) * 0.035;
-        var _stretch_y = cos(_gelatin_time) * 0.035;
+    draw_sprite_ext(sprite_index, image_index, _dx, _dy, image_xscale * iman_sx, image_yscale * iman_sy, iman_ang, _blend, image_alpha);
 
-        var _final_xscale = image_xscale * (1 + _stretch_x);
-        var _final_yscale = image_yscale * (1 + _stretch_y);
-
-        // Dibujamos cada pieza con su vaivén, su estiramiento y su rotación de péndulo
-        draw_sprite_ext(spr_ramo_partes, i, x + _viento_x, y,
-            _final_xscale, _final_yscale, _rotacion, image_blend, image_alpha);
+    // Onda de repulsión (Z)
+    if (iman_onda_timer > 0) {
+        var _p = 1 - (iman_onda_timer / 20);
+        draw_set_alpha(1 - _p);
+        draw_circle_color(iman_onda_x, iman_onda_y, 10 + (iman_repel_radio - 10) * _p, c_red, c_red, true);
+        draw_circle_color(iman_onda_x, iman_onda_y, 6 + (iman_repel_radio * 0.6) * _p, c_white, c_white, true);
+        draw_set_alpha(1);
+        iman_onda_timer--;
     }
 }
 else {

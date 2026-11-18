@@ -1,0 +1,9 @@
+radio = 6;
+radio_max = 70;
+vida_max = 24;
+vida = 24;
+suave = 0.16;
+dano = true;
+dano_valor = 5;
+stun = 90;
+golpeados = ds_list_create();

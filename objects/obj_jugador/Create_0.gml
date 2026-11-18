@@ -102,6 +102,37 @@ tobogan_inflado_timer = 0;
 tobogan_dash_timer = 0;
 #endregion
 
+#region Transformación Imán (TF 13 - Ingeniera Magnética)
+iman_vel = 2.4;              // camina más lento que Gaby normal (es pesada)
+iman_salto = -7;             // salta menos
+iman_grv_mult = 1.15;        // cae un poquito más rápido
+iman_pegado = false;         // ¿está pegada a una pared / techo / suelo?
+iman_superficie = "suelo";   // "suelo", "techo", "izq", "der"
+iman_suelta_cd = 0;          // frames sin poder volver a pegarse (después de saltar o repeler)
+// Avanzar por partes (pasitos de gusanito)
+iman_paso_timer = 0;
+iman_paso_dur = 9;           // frames que dura cada pasito
+iman_paso_dist = 26;         // pixeles que avanza cada pasito
+iman_paso_pausa = 5;         // pausa entre pasito y pasito
+iman_paso_cd = 0;
+iman_paso_dir = 0;
+iman_paso_desde = 0;
+// Repeler (Z)
+iman_repel_cd = 0;
+iman_repel_cd_max = 40;
+iman_repel_radio = 120;
+iman_repel_fuerza = 9;
+iman_empujados = [];         // enemigos que van saliendo empujados
+// Visual
+iman_ang = 0;
+iman_sx = 1;
+iman_sy = 1;
+iman_onda_timer = 0;
+iman_onda_x = 0;
+iman_onda_y = 0;
+golpe_iman_especial = false;
+#endregion
+
 #region Viento (corriente de la Reina del Éter)
 viento_y = 0;
 #endregion

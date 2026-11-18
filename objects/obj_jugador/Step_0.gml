@@ -1,4 +1,13 @@
-
+if (!variable_instance_exists(id, "tf_cooldown")) tf_cooldown = 0;
+if (!variable_instance_exists(id, "arpia_picada")) arpia_picada = 0;
+if (!variable_instance_exists(id, "escala_tf")) escala_tf = 0.6;
+if (!variable_instance_exists(id, "medusa_zcd"))    medusa_zcd = 0;
+if (!variable_instance_exists(id, "medusa_xcd"))    medusa_xcd = 0;
+if (!variable_instance_exists(id, "medusa_lock"))   medusa_lock = 0;
+if (!variable_instance_exists(id, "muerte_fase"))   muerte_fase = 0;
+if (!variable_instance_exists(id, "muerte_t"))      muerte_t = 0;
+if (!variable_instance_exists(id, "muerte_espera")) muerte_espera = 0;
+if (!variable_instance_exists(id, "esc_base")) esc_base = 1;
 if (global.pausado) {
     exit;
 }
@@ -15,7 +24,6 @@ if (can_move == false) {
 if (is_dead) {
     hsp = 0; 
     
-    // Solo suelta el arma si NO está transformado Y la bandera está limpia
     if (!arma_soltada && !is_transformed && transform_type == 0) {
         arma_soltada = true; 
         if (current_weapon > 0) {
@@ -32,6 +40,45 @@ if (is_dead) {
         }
     }
 
+    if (is_transformed && transform_type == 10 && death_type != "hoyo_negro") {
+        if (muerte_fase == 0) {
+            muerte_fase = 1;
+            muerte_t = 0;
+            muerte_espera = 10;
+            is_hit = false;
+            vsp = 0;
+            screen_shake(6);
+        }
+
+        if (muerte_fase == 1) {
+            globos_medusa_step();
+
+            if (muerte_espera > 0) {
+                muerte_espera--;
+            } else {
+                muerte_t++;
+                if (muerte_t % 5 == 0) {
+                    if (!globos_medusa_reventar()) {
+                        muerte_fase = 2;
+                        arma_soltada = true;
+                        is_transformed = false;
+                        transform_type = 0;
+                        image_yscale = 1;
+                        image_xscale = (image_xscale >= 0) ? 1 : -1;
+                        mask_index = sprGaby_idle_mask;
+                        sprite_index = spr_Gaby_die_normal;
+                        image_index = 4;
+                        image_speed = 1;
+                        vsp = -2;
+                        y -= 6;
+                        fx_pop_globo(x, y - 20, 14);
+                    }
+                }
+            }
+            exit;
+        }
+    }    
+    
     if (death_type == "hoyo_negro") {
         vsp = 0;
         if (image_xscale < 0) image_xscale = abs(image_xscale);
@@ -45,7 +92,10 @@ if (is_dead) {
             visible = false;
         }
         exit;
-    } else {
+        } else {
+        image_xscale = (image_xscale >= 0) ? 1 : -1;
+        image_yscale = 1;
+
         vsp += grv;
         if (place_meeting(x, y + vsp, obj_wall)) {
             while (!place_meeting(x, y + sign(vsp), obj_wall)) {
@@ -75,6 +125,12 @@ var _is_grounded = place_meeting(x, y + 1, obj_wall) ||
                    (place_meeting(x, y + 1, obj_plataforma_movil) && vsp >= 0) || 
                    (place_meeting(x, y + 1, obj_plataforma_caida) && vsp >= 0) ||
                    (place_meeting(x, y + 1, obj_plataforma_atravesable) && vsp >= 0);
+esc_base = tf_escala((is_transformed || is_transforming) ? transform_type : 0);
+var _squash = (is_transformed && !is_transforming && (transform_type == 1 || transform_type == 6));
+if (!_squash) {
+    image_xscale = ((image_xscale >= 0) ? 1 : -1) * esc_base;
+    image_yscale = esc_base;
+}
 
 if (is_caught) {
     hsp = 0;
@@ -131,7 +187,7 @@ if (!is_hit) {
             else if (transform_type == 3) {
                 mask_index = spr_gaby_globo; 
             } 
-            else if (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10) {
+            else if (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10 || transform_type == 11 || transform_type == 12) {
                 mask_index = sprBalon_idle; 
             }
             else {
@@ -164,7 +220,7 @@ if (!is_hit) {
         move = 0;
     }
     current_spd = key_run ? run_spd : walk_spd;
-    current_spd *= vel_mult;   // CAMBIO: zonas de gravedad (Soberana)
+    current_spd *= vel_mult;
 
     var _en_telarana = place_meeting(x, y, obj_tela_arana);
     if (_en_telarana) {
@@ -302,24 +358,203 @@ if (!is_hit) {
             vsp = lerp(vsp, 0, 0.15); 
         }
     }
-    // --- NUEVA LÓGICA DE MOVIMIENTO PARA LA TRANSFORMACIÓN 10 (Medusa / Globos) ---
     else if (is_transformed && transform_type == 10) {
+        if (medusa_zcd > 0)  medusa_zcd--;
+        if (medusa_xcd > 0)  medusa_xcd--;
+        if (medusa_lock > 0) medusa_lock--;
+
         var _dir_x = (keyboard_check(vk_right) || keyboard_check(ord("D"))) - (keyboard_check(vk_left) || keyboard_check(ord("A")));
         var _dir_y = (keyboard_check(vk_down)  || keyboard_check(ord("S"))) - (keyboard_check(vk_up)   || keyboard_check(ord("W")));
+        if (medusa_lock > 0) { _dir_x = 0; _dir_y = 0; }
         var _medusa_spd = 4.5;
-        
+
         if (_dir_x != 0) {
             hsp = lerp(hsp, _dir_x * _medusa_spd, 0.2);
             image_xscale = sign(_dir_x) * abs(image_xscale);
         } else {
             hsp = lerp(hsp, 0, 0.15);
         }
-        
+
         if (_dir_y != 0) {
             vsp = lerp(vsp, _dir_y * _medusa_spd, 0.2);
         } else {
-            vsp += grv * 0.5; // Gravedad suave para que empiece a caer si se queda quieto
+            vsp += grv * 0.5;
             vsp = clamp(vsp, -4, 4);
+        }
+
+        globos_medusa_step();
+    }
+    else if (is_transformed && transform_type == 11) {
+        var _dir_x = (keyboard_check(vk_right) || keyboard_check(ord("D"))) - (keyboard_check(vk_left) || keyboard_check(ord("A")));
+        var _dir_y = (keyboard_check(vk_down)  || keyboard_check(ord("S"))) - (keyboard_check(vk_up)   || keyboard_check(ord("W")));
+        var _hada_spd = 3.2;
+
+        is_dashing = false;
+        nube_fase_active = false;
+        slam_timer = 0;
+
+        if (tf_cooldown > 0) tf_cooldown--;
+
+        if (_dir_x != 0) {
+            hsp = lerp(hsp, _dir_x * _hada_spd, 0.2);
+            image_xscale = sign(_dir_x) * esc_base;
+        } else {
+            hsp = lerp(hsp, 0, 0.15);
+        }
+
+        if (_dir_y != 0) {
+            vsp = lerp(vsp, _dir_y * _hada_spd, 0.2);
+        } else {
+            var _flote_hada = sin(current_time * 0.004) * 0.6;
+            vsp = lerp(vsp, _flote_hada, 0.1);
+        }
+    }
+    else if (is_transformed && transform_type == 12) {
+        var _dir_x = (keyboard_check(vk_right) || keyboard_check(ord("D"))) - (keyboard_check(vk_left) || keyboard_check(ord("A")));
+        var _dir_y = (keyboard_check(vk_down)  || keyboard_check(ord("S"))) - (keyboard_check(vk_up)   || keyboard_check(ord("W")));
+        var _arpia_spd = 4.8;
+
+        is_dashing = false;
+        nube_fase_active = false;
+        slam_timer = 0;
+
+        if (tf_cooldown > 0) tf_cooldown--;
+
+        if (arpia_picada > 0) {
+            arpia_picada--;
+            var _dir_picada = (image_xscale >= 0) ? 1 : -1;
+            hsp = _dir_picada * 8;
+            vsp = 7;
+        } else {
+            if (_dir_x != 0) {
+                hsp = lerp(hsp, _dir_x * _arpia_spd, 0.2);
+                image_xscale = sign(_dir_x) * esc_base;
+            } else {
+                hsp = lerp(hsp, 0, 0.15);
+            }
+
+            if (_dir_y != 0) {
+                vsp = lerp(vsp, _dir_y * _arpia_spd, 0.2);
+            } else {
+                vsp = lerp(vsp, 0, 0.15);
+            }
+        }
+    }
+    // --- TRANSFORMACIÓN 13 (Imán / Ingeniera Magnética): se pega y avanza por partes ---
+    else if (is_transformed && transform_type == 13) {
+        var _x_hold = keyboard_check(ord("X"));
+        var _dir_y = (keyboard_check(vk_down) || keyboard_check(ord("S"))) - (keyboard_check(vk_up) || keyboard_check(ord("W")));
+
+        is_dashing = false;
+        nube_fase_active = false;
+        slam_timer = 0;
+
+        if (iman_suelta_cd > 0) iman_suelta_cd--;
+
+        if (!iman_pegado) {
+            // Camina y salta, pero más pesada que Gaby normal
+            var _iman_spd = iman_vel * vel_mult;
+            if (_en_telarana) _iman_spd *= 0.4;
+
+            if (move != 0) {
+                hsp += move * _aceleracion;
+                hsp = clamp(hsp, -_iman_spd, _iman_spd);
+                image_xscale = sign(move) * abs(image_xscale);
+            } else {
+                hsp = lerp(hsp, 0, _friccion);
+                if (abs(hsp) < 0.1) hsp = 0;
+            }
+
+            vsp += grv * iman_grv_mult * grav_mult;
+            vsp = min(vsp, 10);
+
+            if (coyote_timer > 0 && jump_buffer > 0) {
+                vsp = iman_salto * salto_mult;
+                if (_en_telarana) vsp *= 0.5;
+                coyote_timer = 0;
+                jump_buffer = 0;
+            }
+
+            iman_sx = lerp(iman_sx, 1, 0.2);
+            iman_sy = lerp(iman_sy, 1, 0.2);
+
+            // Mantener X: se pega a la superficie que esté tocando
+            if (_x_hold && iman_suelta_cd <= 0) {
+                var _sup = "";
+                if (place_meeting(x - 1, y, obj_wall)) _sup = "izq";
+                else if (place_meeting(x + 1, y, obj_wall)) _sup = "der";
+                else if (place_meeting(x, y - 1, obj_wall)) _sup = "techo";
+                else if (place_meeting(x, y + 1, obj_wall)) _sup = "suelo";
+
+                if (_sup != "") {
+                    iman_pegado = true;
+                    iman_superficie = _sup;
+                    hsp = 0;
+                    vsp = 0;
+                    iman_paso_timer = 0;
+                    iman_paso_cd = 0;
+                }
+            }
+        }
+        else {
+            // Hacia dónde está la superficie
+            var _sx = 0;
+            var _sy = 0;
+            switch (iman_superficie) {
+                case "izq":   _sx = -1; break;
+                case "der":   _sx = 1;  break;
+                case "techo": _sy = -1; break;
+                default:      _sy = 1;  break;
+            }
+            var _horizontal = (_sy != 0); // en suelo/techo avanza a los lados, en paredes arriba/abajo
+            hsp = 0;
+            vsp = 0;
+
+            if (iman_paso_timer > 0) {
+                // Pasito en curso (arranca suave y frena suave)
+                iman_paso_timer--;
+                var _t = 1 - (iman_paso_timer / iman_paso_dur);
+                var _e = (_t < 0.5) ? (2 * _t * _t) : (1 - power(-2 * _t + 2, 2) / 2);
+                var _meta = iman_paso_desde + iman_paso_dir * iman_paso_dist * _e;
+                if (_horizontal) hsp = _meta - x; else vsp = _meta - y;
+
+                // Se estira al avanzar, como gusanito
+                var _k = sin(_t * pi);
+                iman_sx = 1 + _k * 0.3;
+                iman_sy = 1 - _k * 0.2;
+
+                if (iman_paso_timer <= 0) iman_paso_cd = iman_paso_pausa;
+            }
+            else {
+                iman_sx = lerp(iman_sx, 1, 0.3);
+                iman_sy = lerp(iman_sy, 1, 0.3);
+                if (iman_paso_cd > 0) iman_paso_cd--;
+
+                var _dir = _horizontal ? move : _dir_y;
+                if (_dir != 0 && iman_paso_cd <= 0) {
+                    iman_paso_timer = iman_paso_dur;
+                    iman_paso_dir = sign(_dir);
+                    iman_paso_desde = _horizontal ? x : y;
+                    if (_horizontal) image_xscale = sign(_dir) * abs(image_xscale);
+                }
+            }
+
+            // Si se acabó la superficie, se despega y cae
+            if (iman_paso_timer <= 0 && !place_meeting(x + _sx * 2, y + _sy * 2, obj_wall)) {
+                iman_pegado = false;
+            }
+
+            // Soltar X: se despega
+            if (!_x_hold) {
+                iman_pegado = false;
+                hsp = -_sx * 2;
+            }
+            // Pegada al suelo: arriba/W la hace saltar despegándose
+            else if (key_jump && iman_superficie == "suelo") {
+                iman_pegado = false;
+                iman_suelta_cd = 10;
+                vsp = iman_salto * salto_mult;
+            }
         }
     }
     else {
@@ -334,7 +569,7 @@ if (!is_hit) {
             }
         }
 
-        vsp += grv * grav_mult;   // CAMBIO: zonas de gravedad (Soberana)
+        vsp += grv * grav_mult;
 
         if (coyote_timer > 0 && jump_buffer > 0) {
             var _salto_base = is_transformed ? jump_spd_ball : jump_spd_standard;
@@ -344,9 +579,9 @@ if (!is_hit) {
             }
             
             if (_en_telarana) {
-                vsp = _salto_base * 0.5 * salto_mult;   // CAMBIO: zonas de gravedad
+                vsp = _salto_base * 0.5 * salto_mult;
             } else {
-                vsp = _salto_base * salto_mult;         // CAMBIO: zonas de gravedad
+                vsp = _salto_base * salto_mult;
             }
             coyote_timer = 0; 
             jump_buffer = 0;
@@ -435,7 +670,7 @@ if (!is_hit) {
                 image_xscale = other.image_xscale;
             }
         }
-        
+
         if (key_atk_x && !is_poisoned) {
             var _dir_miel = (image_xscale >= 0) ? 1 : -1;
             var _spawn_x = x + (_dir_miel * 12) + (hsp * 2);
@@ -445,15 +680,41 @@ if (!is_hit) {
             _miel.image_xscale = image_xscale;
         }
     }
+    else if (is_transformed && transform_type == 10) {
+        if (key_atk_z && !is_poisoned && !is_hit && medusa_zcd <= 0) {
+            medusa_zcd = 50;
+            var _p = globos_medusa_pos(GLOBO_Z);
+            var _g = instance_create_layer(_p.x, _p.y, "Instances", obj_globo_explosivo);
+            _g.hsp = ((image_xscale >= 0) ? 1 : -1) * 5;
+            globos_medusa_soltar(GLOBO_Z);
+            fx_pop_globo(_p.x, _p.y, 6);
+        }
+
+        if (key_atk_x && !is_poisoned && !is_hit && medusa_xcd <= 0) {
+            medusa_xcd = 70;
+            medusa_lock = 18;
+            hsp *= 0.3;
+            instance_create_layer(x, y - 40, "Instances", obj_onda_pulso);
+            for (var i = 0; i < GLOBOS_N; i++) {
+                gl_vel[i] += random_range(-14, 14);
+                var _pg = globos_medusa_pos(i);
+                var _s = instance_create_layer(_pg.x, _pg.y, "Instances", obj_efecto_chispa);
+                _s.dir = random(360);
+                _s.image_blend = make_color_rgb(159, 244, 255);
+            }
+            screen_shake(3);
+        }
+    }
     else if (is_transformed && transform_type == 6) {
+        var _dir_t = (image_xscale >= 0) ? 1 : -1;
         if (tobogan_inflado_timer > 0) {
             tobogan_inflado_timer--;
-            image_xscale = lerp(image_xscale, 1.3 * (image_xscale >= 0 ? 1 : -1), 0.15);
-            image_yscale = lerp(image_yscale, 1.4, 0.15);
+            image_xscale = lerp(image_xscale, 1.3 * esc_base * _dir_t, 0.15);
+            image_yscale = lerp(image_yscale, 1.4 * esc_base, 0.15);
         } else {
             tobogan_inflado_timer = 0;
-            image_xscale = lerp(image_xscale, 1.0 * (image_xscale >= 0 ? 1 : -1), 0.15);
-            image_yscale = lerp(image_yscale, 1.0, 0.15);
+            image_xscale = lerp(image_xscale, 1.0 * esc_base * _dir_t, 0.15);
+            image_yscale = lerp(image_yscale, 1.0 * esc_base, 0.15);
         }
 
         if (key_atk_z && !is_poisoned && tobogan_inflado_timer <= 0) {
@@ -543,8 +804,88 @@ if (!is_hit) {
         if (key_atk_x && !is_poisoned) {
         }
     }     
+    else if (is_transformed && transform_type == 11) {
+        if (key_atk_x && !is_poisoned && tf_cooldown <= 0) {
+            var _dir_polvo = (image_xscale >= 0) ? 1 : -1;
+            var _polvo = instance_create_layer(x + (_dir_polvo * 20), y - 20, "Instances", obj_polvo_hada);
+            _polvo.hsp = _dir_polvo * 6;
+            tf_cooldown = 18;
+        }
+    }
+    else if (is_transformed && transform_type == 12) {
+        if (key_atk_z && !is_poisoned && tf_cooldown <= 0 && arpia_picada <= 0) {
+            arpia_picada = 18;
+            tf_cooldown = 50;
+        }
+
+        if (arpia_picada > 0) {
+            var _enemy_picada = instance_place(x + hsp, y + vsp, obj_enemy_parent);
+            if (_enemy_picada != noone) {
+                with (_enemy_picada) {
+                    instance_destroy();
+                }
+            }
+        }
+    }
+    // --- TRANSFORMACIÓN 13 (Imán): Z = repeler ---
+    else if (is_transformed && transform_type == 13) {
+        if (iman_repel_cd > 0) iman_repel_cd--;
+
+        if (key_atk_z && !is_poisoned && iman_repel_cd <= 0) {
+            iman_repel_cd = iman_repel_cd_max;
+            var _cx = x;
+            var _cy = (bbox_top + bbox_bottom) / 2;
+            iman_onda_timer = 20;
+            iman_onda_x = _cx;
+            iman_onda_y = _cy;
+            screen_shake(2);
+
+            // Empuja a los enemigos cercanos (los que se pueden aturdir) y los frena un momento
+            with (all) {
+                if (id != other.id && variable_instance_exists(id, "stun_timer")) {
+                    var _ex = (bbox_left + bbox_right) / 2;
+                    var _ey = (bbox_top + bbox_bottom) / 2;
+                    if (point_distance(_cx, _cy, _ex, _ey) < other.iman_repel_radio) {
+                        stun_timer = max(stun_timer, 40);
+                        var _dir_e = sign(_ex - _cx);
+                        if (_dir_e == 0) _dir_e = 1;
+                        array_push(other.iman_empujados, { inst: id, vel: _dir_e * other.iman_repel_fuerza });
+                    }
+                }
+            }
+
+            // Si estaba pegada, se repele de la superficie y sale disparada (salto magnético)
+            if (iman_pegado) {
+                iman_pegado = false;
+                iman_suelta_cd = 12;
+                iman_paso_timer = 0;
+                switch (iman_superficie) {
+                    case "izq":   hsp = 10;  vsp = -5;  break;
+                    case "der":   hsp = -10; vsp = -5;  break;
+                    case "techo": hsp = 0;   vsp = 8;   break;
+                    default:      hsp = 0;   vsp = -11 * salto_mult; break;
+                }
+            }
+        }
+
+        // Mueve a los enemigos empujados respetando las paredes (se van frenando)
+        for (var i = array_length(iman_empujados) - 1; i >= 0; i--) {
+            var _emp = iman_empujados[i];
+            if (!instance_exists(_emp.inst) || abs(_emp.vel) < 0.5) {
+                array_delete(iman_empujados, i, 1);
+                continue;
+            }
+            with (_emp.inst) {
+                if (!place_meeting(x + _emp.vel, y, obj_wall)) {
+                    x += _emp.vel;
+                } else {
+                    _emp.vel = 0;
+                }
+            }
+            _emp.vel *= 0.85;
+        }
+    }
     else {
-        // Validación estricta: Solo permite armas y ataques humanos si NO está transformado
         if (!is_transformed) {
             if (key_atk_z && !is_attacking && !is_poisoned) { current_weapon = 1; is_attacking = true; is_shooting = false; image_index = 0; }
             if (key_atk_x && !is_attacking && !is_poisoned) { current_weapon = 2; is_attacking = true; is_shooting = true; bullet_spawned = false; image_index = 0; }
@@ -552,15 +893,13 @@ if (!is_hit) {
     }
 } 
 
-// ===== CAMBIO: el viento de la corriente de la Reina se suma al movimiento final =====
 var _finalMoveX = hsp;
 var _finalMoveY = vsp + viento_y;
 viento_y = 0;
-// ====================================================================================
 
 var _platform = noone;
 
-if (!(is_transformed && (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10)) && !(is_transformed && transform_type == 3 && is_dashing)) {
+if (!(is_transformed && (transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10 || transform_type == 11 || transform_type == 12)) && !(is_transformed && transform_type == 3 && is_dashing) && !(is_transformed && transform_type == 13 && iman_pegado)) {
     _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_movil);
     if (!_platform) _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_caida);
     if (!_platform) _platform = instance_place(x, y + max(1, _finalMoveY + 2), obj_plataforma_atravesable);
@@ -659,7 +998,7 @@ if (!is_hit && !is_dead) {
         if (hsp > 0) image_xscale = abs(image_xscale);
         if (hsp < 0) image_xscale = -abs(image_xscale);
     }
-    if (is_transformed && (transform_type == 3 || transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10) && abs(hsp) > 0.1) {
+    if (is_transformed && (transform_type == 3 || transform_type == 4 || transform_type == 5 || transform_type == 7 || transform_type == 9 || transform_type == 10 || transform_type == 11 || transform_type == 12) && abs(hsp) > 0.1) {
         image_xscale = sign(hsp) * abs(image_xscale);
     }
 
@@ -701,8 +1040,16 @@ if (!is_hit && !is_dead) {
                     image_speed = 1;
                 }
             } else if (transform_type == 10) {
-                // Sprite idle temporal para el tipo 10 (mientras se configuran las partes)
                 sprite_index = spr_ramo_base2; 
+            }
+            else if (transform_type == 11) {
+                sprite_index = spr_gaby_hada;
+            }
+            else if (transform_type == 12) {
+                sprite_index = spr_gaby_arpia;
+            }
+            else if (transform_type == 13) {
+                sprite_index = spr_gaby_iman;
             }
         } else {
             if (current_weapon == 1) {
@@ -754,11 +1101,33 @@ else {
             }
         }
         else if (transform_type == 10) {
-            // Manejo del golpe especial de la medusa (Caso A con el gif de hit que adjuntaste)
             if (variable_instance_exists(id, "golpe_medusa_especial") && golpe_medusa_especial) {
-                sprite_index = spr_gaby_medusa_hit2; // O el sprite del hit de globos
+                sprite_index = spr_gaby_medusa_hit2;
             } else {
                 sprite_index = spr_gaby_medusa_hit; 
+            }
+        }
+        else if (transform_type == 11) {
+            if (variable_instance_exists(id, "golpe_hada_especial") && golpe_hada_especial) {
+                sprite_index = spr_gaby_hada_hit2;
+            } else {
+                sprite_index = spr_gaby_hada_hit;
+            }
+        }
+        else if (transform_type == 12) {
+            if (variable_instance_exists(id, "golpe_arpia_especial") && golpe_arpia_especial) {
+                sprite_index = spr_gaby_arpia_hit2;
+            } else {
+                sprite_index = spr_gaby_arpia_hit;
+            }
+        }
+        else if (transform_type == 13) {
+            iman_pegado = false;
+            // Golpe especial de la Ingeniera: se vuelve imán metálico
+            if (golpe_iman_especial) {
+                sprite_index = spr_gaby_iman_hit2;
+            } else {
+                sprite_index = spr_gaby_iman; // (no hay sprite de hit normal todavía: parpadea en rojo en el Draw)
             }
         }
     } 
@@ -787,6 +1156,16 @@ else {
         if (variable_instance_exists(id, "golpe_medusa_especial")) {
             golpe_medusa_especial = false;
         }
+
+        if (variable_instance_exists(id, "golpe_hada_especial")) {
+            golpe_hada_especial = false;
+        }
+
+        if (variable_instance_exists(id, "golpe_arpia_especial")) {
+            golpe_arpia_especial = false;
+        }
+
+        golpe_iman_especial = false;
     }
 }
 
@@ -816,29 +1195,29 @@ if (_pad != noone) {
 }
 
 if (is_transformed && (transform_type == 1 || transform_type == 6)) {
+    var _dir_b = (image_xscale >= 0) ? 1 : -1;
     if (!_is_grounded) {
         if (vsp > 2) {
-            image_yscale = lerp(image_yscale, 1.3, 0.2);
-            image_xscale = lerp(image_xscale, 0.8 * (image_xscale >= 0 ? 1 : -1), 0.2);
+            image_yscale = lerp(image_yscale, 1.3 * esc_base, 0.2);
+            image_xscale = lerp(image_xscale, 0.8 * esc_base * _dir_b, 0.2);
         } else if (vsp < -2) {
-            image_yscale = lerp(image_yscale, 1.2, 0.2);
-            image_xscale = lerp(image_xscale, 0.9 * (image_xscale >= 0 ? 1 : -1), 0.2);
+            image_yscale = lerp(image_yscale, 1.2 * esc_base, 0.2);
+            image_xscale = lerp(image_xscale, 0.9 * esc_base * _dir_b, 0.2);
         } else {
-            image_yscale = lerp(image_yscale, 1, 0.2);
-            image_xscale = lerp(image_xscale, 1 * (image_xscale >= 0 ? 1 : -1), 0.2);
+            image_yscale = lerp(image_yscale, 1 * esc_base, 0.2);
+            image_xscale = lerp(image_xscale, 1 * esc_base * _dir_b, 0.2);
         }
     } else {
         if (abs(hsp) > 1) {
-            image_yscale = lerp(image_yscale, 0.8, 0.2);
-            image_xscale = lerp(image_xscale, 1.2 * sign(hsp), 0.2);
+            image_yscale = lerp(image_yscale, 0.8 * esc_base, 0.2);
+            image_xscale = lerp(image_xscale, 1.2 * esc_base * sign(hsp), 0.2);
         } else {
-            image_yscale = lerp(image_yscale, 1, 0.2);
-            image_xscale = lerp(image_xscale, 1 * (image_xscale >= 0 ? 1 : -1), 0.2);
+            image_yscale = lerp(image_yscale, 1 * esc_base, 0.2);
+            image_xscale = lerp(image_xscale, 1 * esc_base * _dir_b, 0.2);
         }
     }
 }
 
-// ===== CAMBIO: se reinician los multiplicadores de las zonas de gravedad (la zona los vuelve a poner cada frame) =====
 grav_mult = 1;
 salto_mult = 1;
 vel_mult = 1;

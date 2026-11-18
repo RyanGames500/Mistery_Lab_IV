@@ -62,6 +62,7 @@ switch (estado) {
             estado = ESTADO_ARP.REGRESO_CIELO;
         }
         break;
+    
     case ESTADO_ARP.REGRESO_CIELO:
         
         hsp = lerp(hsp, 0, 0.1);
@@ -113,3 +114,60 @@ if (place_meeting(x, y + vsp, obj_wall)) {
     if (estado == ESTADO_ARP.PICADA) estado = ESTADO_ARP.REGRESO_CIELO;
 }
 y += vsp;
+
+// --- CONTACTO: la picada transforma a Gaby en Arpia (tipo 12) ---
+if (estado == ESTADO_ARP.PICADA && instance_exists(oPlayer) && place_meeting(x, y, oPlayer)) {
+    with (oPlayer) {
+        if (!is_hit) {
+            if (!is_dead && !is_transforming && !invincible) {
+
+                // CASO A: Si ya está transformado en Arpia (Tipo 12)
+                if (is_transformed && transform_type == 12) {
+                    player_take_damage(1, false, 1);
+                    is_hit = true;
+                    image_index = 0;
+                    image_speed = 1;
+
+                    // Bandera de golpe especial para el tipo 12 (usa spr_gaby_arpia_hit2)
+                    golpe_arpia_especial = true;
+
+                    var _dir = sign(other.x - x);
+                    hsp = _dir * -7;
+                    vsp = -5;
+                    x += _dir * -10;
+                }
+                // CASO B: Si se transforma por primera vez en Arpia
+                else {
+                    global.hp -= 1;
+                    if (global.hp <= 0) { is_dead = true; }
+
+                    invincible = true;
+                    alarm[2] = 90;
+
+                    golpe_arpia_especial = false;
+
+                    is_transforming = true;
+                    is_transformed = false;
+                    hsp = 0;
+                    vsp = 0;
+                    image_index = 0;
+                    image_speed = 1;
+
+                    transform_type = 12;
+                    sprite_index = spr_gaby_arpia_transformando;
+                    fx_transformacion(x, y, transform_type);
+                    // Desbloqueo seguro en galería
+                    if (variable_global_exists("galeria_items")) {
+                        if (transform_type < array_length(global.galeria_items)) {
+                            global.galeria_items[transform_type].unlocked = true;
+                            if (script_exists(asset_get_index("guardar_galeria"))) {
+                                guardar_galeria();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    estado = ESTADO_ARP.REGRESO_CIELO;
+}

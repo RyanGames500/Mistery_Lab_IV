@@ -35,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_Wall_1",
-    "path":"sprites/spr_Wall_1/spr_Wall_1.yy",
+    "name":"spr_medusa",
+    "path":"sprites/spr_medusa/spr_medusa.yy",
   },
   "spriteMaskId":null,
   "visible":true,
